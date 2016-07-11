@@ -14,6 +14,7 @@ func catch(player_name):
 	return player
 
 func shot(type):
+	print(type)
 	root.get_node("ball").shot(type)
 
 func get_player(player_name):
