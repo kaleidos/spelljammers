@@ -2,6 +2,7 @@
 extends Label
 var start
 var seconds
+var limit = 5
 
 func _ready():
 	start = OS.get_ticks_msec()
@@ -11,10 +12,11 @@ func _fixed_process(delta):
 	var time = OS.get_ticks_msec()
 
 	var newseconds = (time - start) / 1000
-
-	if seconds != newseconds:
+	if newseconds >= limit:
+		get_node("/root/stadium").setScene("res://end.tscn")
+	elif seconds != newseconds:
 		seconds = newseconds
-		set_text(str(60 - seconds))
+		set_text(str(limit - seconds))
 
 
 
