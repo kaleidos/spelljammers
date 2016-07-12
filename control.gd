@@ -46,11 +46,6 @@ func show_points(player1_points_str, player2_points_str):
 	var poinstaInstance = points.instance()
 	root.add_child(poinstaInstance)
 	poinstaInstance.set_pos(Vector2(253, 150))
-	print("--------------")
-	print("1")
-	print(player1_points_str)
-	print("2")
-	print(player2_points_str)
 	poinstaInstance.set_points(player1_points_str, player2_points_str)
 
 func reset(player2Start):

@@ -38,7 +38,6 @@ frame = 2
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 
-visibility/visible = false
 build_mode = 0
 polygon = Vector2Array( -17.5828, -17.3811, 17.5139, -17.5064, 17.4512, 17.4649, -17.6454, 17.5903 )
 shape_range = Vector2( 0, 0 )
