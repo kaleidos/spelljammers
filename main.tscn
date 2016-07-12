@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=1]
 
 [ext_resource path="res://main.gd" type="Script" id=1]
-[ext_resource path="res://assets/scenario_base.png" type="Texture" id=2]
+[ext_resource path="res://assets/scenary.png" type="Texture" id=2]
 [ext_resource path="res://net.tscn" type="PackedScene" id=3]
 [ext_resource path="res://stadium_points.tscn" type="PackedScene" id=4]
 [ext_resource path="res://ball.tscn" type="PackedScene" id=5]
@@ -25,15 +25,15 @@ centered = false
 
 [node name="net" parent="." instance=ExtResource( 3 )]
 
-transform/pos = Vector2( 317, 67 )
+transform/pos = Vector2( 298, 74.0247 )
 
 [node name="points_left" parent="." instance=ExtResource( 4 )]
 
-transform/pos = Vector2( 75, 67.1843 )
+transform/pos = Vector2( 50.4662, 45.3211 )
 
 [node name="points_right" parent="." instance=ExtResource( 4 )]
 
-transform/pos = Vector2( 545, 67 )
+transform/pos = Vector2( 546.509, 46.3789 )
 
 [node name="bottom_limit" type="StaticBody2D" parent="."]
 
@@ -97,5 +97,37 @@ margin/left = 301.0
 margin/top = 29.0
 margin/right = 341.0
 margin/bottom = 42.0
+
+[node name="player1_points" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 164.0
+margin/top = 12.0
+margin/right = 204.0
+margin/bottom = 25.0
+text = "00"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="player2_points" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 428.0
+margin/top = 12.0
+margin/right = 468.0
+margin/bottom = 25.0
+text = "00"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
 

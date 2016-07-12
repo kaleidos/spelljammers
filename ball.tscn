@@ -10,7 +10,7 @@
 [sub_resource type="CircleShape2D" id=1]
 
 custom_solver_bias = 0.0
-radius = 12.2438
+radius = 15.9205
 
 [sub_resource type="SpriteFrames" id=2]
 
@@ -51,7 +51,6 @@ frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 
-visibility/visible = false
 transform/pos = Vector2( 0, -0.957669 )
 transform/scale = Vector2( 1, 0.956933 )
 shape = SubResource( 1 )

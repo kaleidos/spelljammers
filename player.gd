@@ -33,10 +33,10 @@ func get_player_ball_position():
 	var pos = get_pos()
 
 	if player2:
-		pos.x -= 30
+		pos.x -= 50
 		return pos
 	else:
-		pos.x += 30
+		pos.x += 50
 		return pos
 
 func _fixed_process(delta):
@@ -75,6 +75,9 @@ func _fixed_process(delta):
 	if !activate:
 		return
 
+	movement.x = 0
+	movement.y = 0
+
 	var initialX = movement.x
 	var initialY = movement.y
 	var boost_speed = 0
@@ -90,10 +93,14 @@ func _fixed_process(delta):
 		movement.y = PLAYER_SPEED + boost_speed
 
 	# the player doens't move
-	if initialX == movement.x && initialY == movement.y:
-		movement.x = 0
-		movement.y = 0
+	if initialX != movement.x || initialY != movement.y:
+		print("kkkk")
+		var motion = movement * delta
+		move(motion)
 
-	var motion = movement * delta
-	move(motion)
-
+#	if initialX == movement.x && initialY == movement.y:
+#		movement.x = 0
+#		movement.y = 0
+#
+#	var motion = movement * delta
+#	move(motion)

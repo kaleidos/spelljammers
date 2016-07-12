@@ -9,6 +9,12 @@ var anim = ""
 func _ready():
 	set_fixed_process(true)
 
+func is_ball():
+	return true
+
+func deactivate():
+	activate = false
+
 func _fixed_process(delta):
 	var new_anim = "stop"
 

@@ -1,22 +1,40 @@
-[gd_scene load_steps=3 format=1]
+[gd_scene load_steps=7 format=1]
 
-[ext_resource path="res://assets/pointarea.png" type="Texture" id=1]
+[ext_resource path="res://assets/points.png" type="Texture" id=1]
+[ext_resource path="res://stadium_points.gd" type="Script" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 
 custom_solver_bias = 0.0
-extents = Vector2( 10, 12.1432 )
+extents = Vector2( 9.27985, 12.699 )
+
+[sub_resource type="RectangleShape2D" id=2]
+
+custom_solver_bias = 0.0
+extents = Vector2( 31.5875, 32.2376 )
+
+[sub_resource type="RectangleShape2D" id=3]
+
+custom_solver_bias = 0.0
+extents = Vector2( 11.2063, 34.39 )
+
+[sub_resource type="RectangleShape2D" id=4]
+
+custom_solver_bias = 0.0
+extents = Vector2( 34.1782, 37.4885 )
 
 [node name="stadium_points" type="Sprite"]
 
 texture = ExtResource( 1 )
 centered = false
+script/script = ExtResource( 2 )
 
 [node name="stadium_points" type="StaticBody2D" parent="."]
 
+visibility/visible = false
 input/pickable = false
 shapes/0/shape = SubResource( 1 )
-shapes/0/transform = Matrix32( 1, 0, 0, 11.5194, 10.2668, 139.913 )
+shapes/0/transform = Matrix32( 0.797082, 0, 0, 11.5194, 18.3409, 157.205 )
 shapes/0/trigger = false
 collision/layers = 1
 collision/mask = 1
@@ -28,40 +46,85 @@ __meta__ = { "_editor_collapsed":true }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="stadium_points"]
 
-transform/pos = Vector2( 10.2668, 139.913 )
-transform/scale = Vector2( 1, 11.5194 )
+transform/pos = Vector2( 18.3409, 157.205 )
+transform/scale = Vector2( 0.797082, 11.5194 )
 shape = SubResource( 1 )
 trigger = false
 _update_shape_index = 0
 
 [node name="3p1" type="Area2D" parent="."]
 
-transform/pos = Vector2( 10.0062, 59.9094 )
-transform/scale = Vector2( 0.315914, 1.87264 )
+transform/pos = Vector2( 18.0382, 65.3767 )
+transform/scale = Vector2( 0.211079, 1.54981 )
 input/pickable = true
+shapes/0/shape = SubResource( 2 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1.07538, 0, 2.65638 )
+shapes/0/trigger = false
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
 linear_damp = 0.1
 angular_damp = 1.0
+collision/layers = 3
+collision/mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="3p1"]
+
+transform/pos = Vector2( 0, 2.65638 )
+transform/scale = Vector2( 1, 1.07538 )
+shape = SubResource( 2 )
+trigger = false
+_update_shape_index = 0
 
 [node name="5p" type="Area2D" parent="."]
 
-transform/pos = Vector2( 10.0062, 139.821 )
-transform/scale = Vector2( 0.315914, 0.623987 )
+transform/pos = Vector2( 18.2888, 155.601 )
+transform/scale = Vector2( 0.18636, 1.00894 )
 input/pickable = true
+shapes/0/shape = SubResource( 3 )
+shapes/0/transform = Matrix32( 3.39307, 0, 0, 0.938927, -2.79489, 0.447716 )
+shapes/0/trigger = false
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
 linear_damp = 0.1
 angular_damp = 1.0
+collision/layers = 3
+collision/mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="5p"]
+
+transform/pos = Vector2( -2.79489, 0.447716 )
+transform/scale = Vector2( 3.39307, 0.938927 )
+shape = SubResource( 3 )
+trigger = false
+_update_shape_index = 0
 
 [node name="3p2" type="Area2D" parent="."]
 
-transform/pos = Vector2( 10.1482, 219.701 )
-transform/scale = Vector2( 0.315914, 1.87264 )
+transform/pos = Vector2( 17.4978, 247.727 )
+transform/scale = Vector2( 0.211079, 1.56641 )
 input/pickable = true
+shapes/0/shape = SubResource( 4 )
+shapes/0/transform = Matrix32( 0.89664, 0, 0, 0.974017, 3.84275, -1.052 )
+shapes/0/trigger = false
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
 linear_damp = 0.1
 angular_damp = 1.0
+collision/layers = 3
+collision/mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="3p2"]
+
+transform/pos = Vector2( 3.84275, -1.052 )
+transform/scale = Vector2( 0.89664, 0.974017 )
+shape = SubResource( 4 )
+trigger = false
+_update_shape_index = 0
+
+[connection signal="body_enter" from="3p1" to="." method="_on_3p1_body_enter"]
+
+[connection signal="body_enter" from="5p" to="." method="_on_5p_body_enter"]
+
+[connection signal="body_enter" from="3p2" to="." method="_on_3p2_body_enter"]
 
 
