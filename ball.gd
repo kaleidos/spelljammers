@@ -17,10 +17,10 @@ func _fixed_process(delta):
 		movement = direction * ball_speed * delta
 		move(movement)
 
-		if is_colliding() && get_collider().get_name() == 'player':
+		if is_colliding() && get_collider().has_method("is_player"):
 			activate = false
 
-			get_node("/root/control").catch(get_collider().get_name())
+			get_collider().catch()
 
 			var n = get_collision_normal()
 			move(n)
@@ -38,18 +38,28 @@ func _fixed_process(delta):
 		anim = new_anim
 
 
-func shot(type):
+func shot(type, player2):
 	direction = Vector2(1, 0)
-	if type == "right-up":
+	if type == "left-up":
+		direction = Vector2(-1, -2)
+	elif type == "left-down":
+		direction = Vector2(-1, 2)
+	elif type == "right-up":
 		direction = Vector2(1, -2)
 	elif type == "right-down":
 		direction = Vector2(1, 2)
-	elif type == "down":
+	elif type == "down" && player2:
+		direction = Vector2(-1, 4)
+	elif type == "down" && !player2:
 		direction = Vector2(1, 4)
-	elif type == "up":
+	elif type == "up" && player2:
+		direction = Vector2(-1, -4)
+	elif type == "up" && !player2:
 		direction = Vector2(1, -4)
 	elif type == "right":
 		direction = Vector2(1, 0)
+	elif type == "left":
+		direction = Vector2(-1, 0)
 
 	activate = true
 
