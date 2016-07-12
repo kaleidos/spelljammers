@@ -20,10 +20,11 @@ func _fixed_process(delta):
 		if is_colliding() && get_collider().has_method("is_player"):
 			activate = false
 
-			get_collider().catch()
+			var player = get_collider()
 
-			var n = get_collision_normal()
-			move(n)
+			player.catch()
+			var position = player.get_player_ball_position()
+			set_pos(position)
 		elif is_colliding():
 			var n = get_collision_normal()
 			direction = n.reflect(direction)

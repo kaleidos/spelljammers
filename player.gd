@@ -29,6 +29,16 @@ func getPlayerEvent(event):
 	else:
 		return "player1_" + event
 
+func get_player_ball_position():
+	var pos = get_pos()
+
+	if player2:
+		pos.x -= 30
+		return pos
+	else:
+		pos.x += 30
+		return pos
+
 func _fixed_process(delta):
 	var control = get_node("/root/control")
 
