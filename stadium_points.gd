@@ -10,9 +10,9 @@ func _on_3p1_body_enter( body ):
 	control = get_node("/root/control")
 
 	if get_pos().x > 300:
-		control.points(3, true)
+		control.points(3, 0)
 	else:
-		control.points(3, false)
+		control.points(0, 3)
 
 func _on_5p_body_enter( body ):
 	if !body.has_method("is_ball"):
@@ -21,9 +21,9 @@ func _on_5p_body_enter( body ):
 	control = get_node("/root/control")
 
 	if get_pos().x > 300:
-		control.points(5, true)
+		control.points(5, 0)
 	else:
-		control.points(5, false)
+		control.points(0, 5)
 
 
 func _on_3p2_body_enter( body ):
@@ -33,6 +33,6 @@ func _on_3p2_body_enter( body ):
 	control = get_node("/root/control")
 
 	if get_pos().x > 300:
-		control.points(3, true)
+		control.points(3, 0)
 	else:
-		control.points(3, false)
+		control.points(0, 3)

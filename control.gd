@@ -5,11 +5,14 @@ var player1_points = 0
 var player2_points = 0
 var players_created = false
 
+var main_loop = true
+
 var player1
 var player2
 
 const PLAYER1_POS = Vector2(150, 200)
 const PLAYER2_POS = Vector2(500, 200)
+
 
 func _ready():
 	var _root = get_tree().get_root()
@@ -39,6 +42,18 @@ func create_get_player2():
 
 	return player2
 
+func show_points(player1_points_str, player2_points_str):
+	var points = load("res://points.tscn")
+	var poinstaInstance = points.instance()
+	root.add_child(poinstaInstance)
+	poinstaInstance.set_pos(Vector2(253, 150))
+	print("--------------")
+	print("1")
+	print(player1_points_str)
+	print("2")
+	print(player2_points_str)
+	poinstaInstance.set_points(player1_points_str, player2_points_str)
+
 func reset(player2Start):
 	var player1 = create_get_player1()
 	var player2 = create_get_player2()
@@ -60,23 +75,36 @@ func reset(player2Start):
 		ball.set_pos(position)
 		player2.catch()
 
-func points(number, player2loose):
-	if player2loose:
-		player1_points += number
-		var points = str(player1_points)
+func hide_points():
+	main_loop = true
+	root.get_node("points").free()
 
-		if points.length() == 1:
-			points = "0" + points
+func points(p1_points, p2_points):
+	if !main_loop:
+		return
 
-		root.get_node("player1_points").set_text(points)
+	var node_name = ""
+
+	main_loop = false
+
+	player1_points += p1_points
+	player2_points += p2_points
+
+	var player1_points_str = str(player1_points)
+	var player2_points_str = str(player2_points)
+
+	if player2_points_str.length() == 1:
+		player2_points_str = "0" + player2_points_str
+
+	if player1_points_str.length() == 1:
+		player1_points_str = "0" + player1_points_str
+
+	root.get_node("player1_points").set_text(player1_points_str)
+	root.get_node("player2_points").set_text(player2_points_str)
+
+	if p1_points > 0:
 		reset(true)
-	else:
-		player2_points += number
-		var points = str(player2_points)
-
-		if points.length() == 1:
-			points = "0" + points
-
-		root.get_node("player2_points").set_text(points)
-
+	elif p2_points > 0:
 		reset(false)
+
+	show_points(player1_points_str, player2_points_str)

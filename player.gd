@@ -4,10 +4,12 @@ extends KinematicBody2D
 var movement = Vector2()
 var activate = true
 var player2 = false
+var control
 
 const PLAYER_SPEED = 220
 
 func _ready():
+	control = get_node("/root/control")
 	set_fixed_process(true)
 
 func deactivate():
@@ -40,7 +42,8 @@ func get_player_ball_position():
 		return pos
 
 func _fixed_process(delta):
-	var control = get_node("/root/control")
+	if !control.main_loop:
+		return
 
 	# shot
 	if player2:
