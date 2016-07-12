@@ -23,7 +23,7 @@ func setPlayer2():
 	player2 = true
 	get_node("Sprite").set_scale(Vector2(-1, 1))
 
-func getPlayerEvent(event):
+func get_player_event(event):
 	if player2:
 		return "player2_" + event
 	else:
@@ -44,28 +44,28 @@ func _fixed_process(delta):
 
 	# shot
 	if player2:
-		if Input.is_action_pressed(getPlayerEvent("main")) && !activate:
-			if Input.is_action_pressed(getPlayerEvent("left")) && Input.is_action_pressed(getPlayerEvent("up")):
+		if Input.is_action_pressed(get_player_event("main")) && !activate:
+			if Input.is_action_pressed(get_player_event("left")) && Input.is_action_pressed(get_player_event("up")):
 				control.shot("left-up", true)
-			elif Input.is_action_pressed(getPlayerEvent("left")) && Input.is_action_pressed(getPlayerEvent("down")):
+			elif Input.is_action_pressed(get_player_event("left")) && Input.is_action_pressed(get_player_event("down")):
 				control.shot("left-down", true)
-			elif Input.is_action_pressed(getPlayerEvent("up")):
+			elif Input.is_action_pressed(get_player_event("up")):
 				control.shot("up", true)
-			elif Input.is_action_pressed(getPlayerEvent("down")):
+			elif Input.is_action_pressed(get_player_event("down")):
 				control.shot("down", true)
 			else:
 				control.shot("left", true)
 
 			activate = true
 	else:
-		if Input.is_action_pressed(getPlayerEvent("main")) && !activate:
-			if Input.is_action_pressed(getPlayerEvent("right")) && Input.is_action_pressed(getPlayerEvent("up")):
+		if Input.is_action_pressed(get_player_event("main")) && !activate:
+			if Input.is_action_pressed(get_player_event("right")) && Input.is_action_pressed(get_player_event("up")):
 				control.shot("right-up", false)
-			elif Input.is_action_pressed(getPlayerEvent("right")) && Input.is_action_pressed(getPlayerEvent("down")):
+			elif Input.is_action_pressed(get_player_event("right")) && Input.is_action_pressed(get_player_event("down")):
 				control.shot("right-down", false)
-			elif Input.is_action_pressed(getPlayerEvent("up")):
+			elif Input.is_action_pressed(get_player_event("up")):
 				control.shot("up", false)
-			elif Input.is_action_pressed(getPlayerEvent("down")):
+			elif Input.is_action_pressed(get_player_event("down")):
 				control.shot("down", false)
 			else:
 				control.shot("right", false)
@@ -80,13 +80,13 @@ func _fixed_process(delta):
 	var boost_speed = 0
 
 	# move
-	if Input.is_action_pressed(getPlayerEvent("right")):
+	if Input.is_action_pressed(get_player_event("right")):
 		movement.x = PLAYER_SPEED + boost_speed
-	if Input.is_action_pressed(getPlayerEvent("left")):
+	if Input.is_action_pressed(get_player_event("left")):
 		movement.x = -(PLAYER_SPEED + boost_speed)
-	if Input.is_action_pressed(getPlayerEvent("up")):
+	if Input.is_action_pressed(get_player_event("up")):
 		movement.y = -(PLAYER_SPEED + boost_speed)
-	if Input.is_action_pressed(getPlayerEvent("down")):
+	if Input.is_action_pressed(get_player_event("down")):
 		movement.y = PLAYER_SPEED + boost_speed
 
 	# the player doens't move

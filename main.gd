@@ -1,13 +1,13 @@
 
 extends Node2D
 
-const PLAYER1_POS = Vector2(150, 200)
-const PLAYER2_POS = Vector2(500, 200)
+const PLAYER1_POS = Vector2(150, 250)
+const PLAYER2_POS = Vector2(500, 250)
 
 func _ready():
 	#OS.set_window_fullscreen(true)
 
-	var player = load("res://player.scn")
+	var player = load("res://player.tscn")
 
 	var player1 = player.instance()
 	add_child(player1)

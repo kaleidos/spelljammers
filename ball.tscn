@@ -1,0 +1,72 @@
+[gd_scene load_steps=10 format=1]
+
+[ext_resource path="res://ball.gd" type="Script" id=1]
+[ext_resource path="res://assets/ball.png" type="Texture" id=2]
+[ext_resource path="res://assets/disc/disc0.png" type="Texture" id=3]
+[ext_resource path="res://assets/disc/disc1.png" type="Texture" id=4]
+[ext_resource path="res://assets/disc/disc2.png" type="Texture" id=5]
+[ext_resource path="res://assets/disc/disc3.png" type="Texture" id=6]
+
+[sub_resource type="CircleShape2D" id=1]
+
+custom_solver_bias = 0.0
+radius = 12.2438
+
+[sub_resource type="SpriteFrames" id=2]
+
+frames = [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ) ]
+
+[sub_resource type="Animation" id=3]
+
+resource/name = "spin"
+length = 0.2
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:frame")
+tracks/0/interp = 1
+tracks/0/keys = { "cont":true, "times":FloatArray( 0, 0.2 ), "transitions":FloatArray( 1, 1 ), "values":[ 0, 3 ] }
+
+[node name="ball" type="KinematicBody2D"]
+
+input/pickable = false
+shapes/0/shape = SubResource( 1 )
+shapes/0/transform = Matrix32( 1, 0, 0, 0.956933, 0, -0.957669 )
+shapes/0/trigger = false
+collision/layers = 2
+collision/mask = 2
+collision/margin = 0.08
+script/script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+
+visibility/visible = false
+texture = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+
+transform/scale = Vector2( 0.2, 0.2 )
+frames = SubResource( 2 )
+frame = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+visibility/visible = false
+transform/pos = Vector2( 0, -0.957669 )
+transform/scale = Vector2( 1, 0.956933 )
+shape = SubResource( 1 )
+trigger = false
+_update_shape_index = 0
+
+[node name="anim" type="AnimationPlayer" parent="."]
+
+playback/process_mode = 1
+playback/default_blend_time = 0.0
+root/root = NodePath("..")
+anims/spin = SubResource( 3 )
+playback/active = true
+playback/speed = 7.0
+blend_times = [  ]
+autoplay = "spin"
+
+
