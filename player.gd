@@ -94,13 +94,5 @@ func _fixed_process(delta):
 
 	# the player doens't move
 	if initialX != movement.x || initialY != movement.y:
-		print("kkkk")
 		var motion = movement * delta
 		move(motion)
-
-#	if initialX == movement.x && initialY == movement.y:
-#		movement.x = 0
-#		movement.y = 0
-#
-#	var motion = movement * delta
-#	move(motion)
