@@ -16,16 +16,11 @@ var player2
 const PLAYER1_POS = Vector2(150, 200)
 const PLAYER2_POS = Vector2(500, 200)
 
-func _resetPlayer():
-	player1 = null
-	player2 = null
+var currentScene = null
 
-func ready():
-	var _root = get_tree().get_root()
-	root = _root.get_child(_root.get_child_count()-1)
-
+func _ready():
 	set_fixed_process(true)
-
+	
 func _fixed_process(delta):
 	if next_round:
 		time_left_next_round -= delta
@@ -37,6 +32,19 @@ func _fixed_process(delta):
 				reset(true)
 			else:
 				reset(false)
+				
+func set_scene(scene):
+	root.queue_free()
+	var s = ResourceLoader.load(scene)
+	var newroot = s.instance()
+	get_tree().get_root().add_child(newroot)	
+	
+func init_scene():
+	var _root = get_tree().get_root()
+	root = _root.get_child(_root.get_child_count()-1)							
+	
+	player1 = null
+	player2 = null
 
 func get_ball():
 	return root.get_node("ball")
@@ -68,7 +76,7 @@ func show_points(player1_points_str, player2_points_str):
 	poinstaInstance.set_pos(Vector2(253, 150))
 	poinstaInstance.set_points(player1_points_str, player2_points_str)
 
-func reset(player2Start):
+func reset(player2Start):		
 	var player1 = create_get_player1()
 	var player2 = create_get_player2()
 

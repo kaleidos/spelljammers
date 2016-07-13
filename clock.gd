@@ -13,7 +13,7 @@ func _fixed_process(delta):
 
 	var newseconds = (time - start) / 1000
 	if newseconds >= limit:
-		get_tree().get_root().get_node("/root/init")._setScene("res://end.tscn")
+		get_tree().get_root().get_node("/root/control").set_scene("res://end.tscn")
 	elif seconds != newseconds:
 		seconds = newseconds
 		set_text(str(limit - seconds))
