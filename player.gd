@@ -50,8 +50,7 @@ func set_action(action_name):
 
 	state = action_name
 
-# 250 - 800
-func shot(type, is_player2):
+func shot(type, is_player2, is_secondary):
 	last_shot_time = OS.get_ticks_msec()
 	var diff = last_shot_time - last_catch_time
 
@@ -61,33 +60,36 @@ func shot(type, is_player2):
 	elif diff > 100 && diff <= 600:
 		speed = 400
 
-	var direction = Vector2(1, 0)
+	if is_secondary:
+		pass
+	else:
+		var direction = Vector2(1, 0)
 
-	if type == "left-up":
-		direction = Vector2(-1.5, -1)
-	elif type == "left-down":
-		direction = Vector2(-1.5, 1)
-	elif type == "right-up":
-		direction = Vector2(1.5, -1)
-	elif type == "right-down":
-		direction = Vector2(1.5, 1)
-	elif type == "down" && is_player2:
-		direction = Vector2(-1.5, 2)
-	elif type == "down" && !is_player2:
-		direction = Vector2(1.5, 2)
-	elif type == "up" && is_player2:
-		direction = Vector2(-1.5, -2)
-	elif type == "up" && !is_player2:
-		direction = Vector2(1.5, -2)
-	elif type == "right":
-		direction = Vector2(1, 0)
-	elif type == "left":
-		direction = Vector2(-1, 0)
+		if type == "left-up":
+			direction = Vector2(-1.5, -1)
+		elif type == "left-down":
+			direction = Vector2(-1.5, 1)
+		elif type == "right-up":
+			direction = Vector2(1.5, -1)
+		elif type == "right-down":
+			direction = Vector2(1.5, 1)
+		elif type == "down" && is_player2:
+			direction = Vector2(-1.5, 2)
+		elif type == "down" && !is_player2:
+			direction = Vector2(1.5, 2)
+		elif type == "up" && is_player2:
+			direction = Vector2(-1.5, -2)
+		elif type == "up" && !is_player2:
+			direction = Vector2(1.5, -2)
+		elif type == "right":
+			direction = Vector2(1, 0)
+		elif type == "left":
+			direction = Vector2(-1, 0)
 
-	set_action("idle")
-	var ball = control.get_ball()
+		set_action("idle")
+		var ball = control.get_ball()
 
-	ball.shot(direction, speed)
+		ball.shot(direction, speed)
 
 func catch():
 	set_action("catch_ball")
@@ -191,29 +193,31 @@ func _fixed_process(delta):
 	# shot
 	last_catch_time
 
-	if are_shot_available() && (is_action_pressed("main") || (current_time - last_catch_time) >= AUTOMATIC_SHOT):
+	if are_shot_available() && (is_action_pressed("main") || is_action_pressed("secondary") || (current_time - last_catch_time) >= AUTOMATIC_SHOT):
+		var is_secondary = is_action_pressed("secondary")
+
 		if player2:
 			if is_action_pressed("left") && is_action_pressed("up"):
-				shot("left-up", true)
+				shot("left-up", true, is_secondary)
 			elif is_action_pressed("left") && is_action_pressed("down"):
-				shot("left-down", true)
+				shot("left-down", true, is_secondary)
 			elif is_action_pressed("up"):
-				shot("up", true)
+				shot("up", true, is_secondary)
 			elif is_action_pressed("down"):
-				shot("down", true)
+				shot("down", true, is_secondary)
 			else:
-				shot("left", true)
+				shot("left", true, is_secondary)
 		else:
 			if is_action_pressed("right") && is_action_pressed("up"):
-				shot("right-up", false)
+				shot("right-up", false, is_secondary)
 			elif is_action_pressed("right") && is_action_pressed("down"):
-				shot("right-down", false)
+				shot("right-down", false, is_secondary)
 			elif is_action_pressed("up"):
-				shot("up", false)
+				shot("up", false, is_secondary)
 			elif is_action_pressed("down"):
-				shot("down", false)
+				shot("down", false, is_secondary)
 			else:
-				shot("right", false)
+				shot("right", false, is_secondary)
 
 	# movement
 	movement.x = 0

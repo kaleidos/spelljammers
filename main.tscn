@@ -25,22 +25,22 @@ centered = false
 
 [node name="net" parent="." instance=ExtResource( 3 )]
 
-transform/pos = Vector2( 298, 74.0247 )
+transform/pos = Vector2( 298.488, 77.9261 )
 z/z = 1
 
 [node name="points_left" parent="." instance=ExtResource( 4 )]
 
-transform/pos = Vector2( 50.4662, 45.3211 )
+transform/pos = Vector2( 45.5894, 71.6311 )
 
 [node name="points_right" parent="." instance=ExtResource( 4 )]
 
-transform/pos = Vector2( 546.509, 46.3789 )
+transform/pos = Vector2( 540.169, 71.7382 )
 
 [node name="bottom_limit" type="StaticBody2D" parent="."]
 
 input/pickable = false
 shapes/0/shape = SubResource( 1 )
-shapes/0/transform = Matrix32( 1, 0, 0, 1, 318.236, 57.0588 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 318.633, 68.9753 )
 shapes/0/trigger = false
 collision/layers = 3
 collision/mask = 3
@@ -52,7 +52,7 @@ __meta__ = { "_editor_collapsed":true }
 
 [node name="collision" type="CollisionShape2D" parent="bottom_limit"]
 
-transform/pos = Vector2( 318.236, 57.0588 )
+transform/pos = Vector2( 318.633, 68.9753 )
 shape = SubResource( 1 )
 trigger = false
 _update_shape_index = 0
@@ -62,7 +62,7 @@ _update_shape_index = 0
 transform/pos = Vector2( 319.766, 357.256 )
 input/pickable = false
 shapes/0/shape = SubResource( 1 )
-shapes/0/transform = Matrix32( 1, 0, 0, 1, 0.975342, -20.0195 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, -4.3891, -1.00006 )
 shapes/0/trigger = false
 collision/layers = 3
 collision/mask = 3
@@ -74,7 +74,7 @@ __meta__ = { "_editor_collapsed":true }
 
 [node name="collision" type="CollisionShape2D" parent="top_limit"]
 
-transform/pos = Vector2( 0.975342, -20.0195 )
+transform/pos = Vector2( -4.3891, -1.00006 )
 shape = SubResource( 1 )
 trigger = false
 _update_shape_index = 0

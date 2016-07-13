@@ -16,7 +16,7 @@ extents = Vector2( 31.5875, 32.2376 )
 [sub_resource type="RectangleShape2D" id=3]
 
 custom_solver_bias = 0.0
-extents = Vector2( 11.2063, 34.39 )
+extents = Vector2( 11.2063, 34.7927 )
 
 [sub_resource type="RectangleShape2D" id=4]
 
@@ -54,8 +54,8 @@ _update_shape_index = 0
 
 [node name="3p1" type="Area2D" parent="."]
 
-transform/pos = Vector2( 18.0382, 65.3767 )
-transform/scale = Vector2( 0.211079, 1.54981 )
+transform/pos = Vector2( 18.0382, 54.6015 )
+transform/scale = Vector2( 0.211079, 1.46602 )
 input/pickable = true
 shapes/0/shape = SubResource( 2 )
 shapes/0/transform = Matrix32( 1, 0, 0, 1.07538, 0, 2.65638 )
@@ -81,7 +81,7 @@ transform/pos = Vector2( 18.2888, 155.601 )
 transform/scale = Vector2( 0.18636, 1.00894 )
 input/pickable = true
 shapes/0/shape = SubResource( 3 )
-shapes/0/transform = Matrix32( 3.39307, 0, 0, 0.938927, -2.79489, 0.447716 )
+shapes/0/transform = Matrix32( 3.39307, 0, 0, 0.852953, -1.05883, -16.235 )
 shapes/0/trigger = false
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
@@ -92,8 +92,8 @@ collision/mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="5p"]
 
-transform/pos = Vector2( -2.79489, 0.447716 )
-transform/scale = Vector2( 3.39307, 0.938927 )
+transform/pos = Vector2( -1.05883, -16.235 )
+transform/scale = Vector2( 3.39307, 0.852953 )
 shape = SubResource( 3 )
 trigger = false
 _update_shape_index = 0
@@ -104,7 +104,7 @@ transform/pos = Vector2( 17.4978, 247.727 )
 transform/scale = Vector2( 0.211079, 1.56641 )
 input/pickable = true
 shapes/0/shape = SubResource( 4 )
-shapes/0/transform = Matrix32( 0.89664, 0, 0, 0.974017, 3.84275, -1.052 )
+shapes/0/transform = Matrix32( 0.89664, 0, 0, 0.856541, 4.00836, -18.1789 )
 shapes/0/trigger = false
 gravity_vec = Vector2( 0, 1 )
 gravity = 98.0
@@ -115,8 +115,8 @@ collision/mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="3p2"]
 
-transform/pos = Vector2( 3.84275, -1.052 )
-transform/scale = Vector2( 0.89664, 0.974017 )
+transform/pos = Vector2( 4.00836, -18.1789 )
+transform/scale = Vector2( 0.89664, 0.856541 )
 shape = SubResource( 4 )
 trigger = false
 _update_shape_index = 0
