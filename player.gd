@@ -13,7 +13,7 @@ extends KinematicBody2D
 # - the movement is blocked after shot during x milliseconds, when the movevement is avalible again ignore the main action button util release
 # - TODO: the player is looking to the las place wher he was looking (left-right)
 # - TODO: shot strength depends in the time between the catch and the shot
-# - TODO: automatic shot after x millisenconds
+# - automatic shot after x millisenconds
 
 var movement = Vector2()
 var state = "idle"
@@ -23,6 +23,7 @@ var control
 # shot
 var block_action_shot = false
 var last_shot_time = 0
+var last_catch_time = 0
 
 # dash
 var block_action_dash = false
@@ -33,6 +34,7 @@ const PLAYER_SPEED = 220
 const DASH_DURATION = 200
 const DASH_SPEED = PLAYER_SPEED + 300
 const SHOT_BLOCK_MOVEMENT = 300
+const AUTOMATIC_SHOT = 2000
 
 func _ready():
 	control = get_node("/root/control")
@@ -42,6 +44,7 @@ func set_action(action_name):
 	if action_name == "dash":
 		block_action_dash = true
 	elif action_name == "catch_ball":
+		last_catch_time = OS.get_ticks_msec()
 		block_action_shot = true
 		block_action_dash = true
 
@@ -147,7 +150,9 @@ func _fixed_process(delta):
 		block_action_shot = false
 
 	# shot
-	if are_shot_available() && is_action_pressed("main"):
+	last_catch_time
+
+	if are_shot_available() && (is_action_pressed("main") || (current_time - last_catch_time) >= AUTOMATIC_SHOT):
 		if player2:
 			if is_action_pressed("left") && is_action_pressed("up"):
 				control.shot("left-up", true)
