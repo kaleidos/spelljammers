@@ -96,13 +96,13 @@ func shot(type, is_player2, is_secondary):
 		else:
 			y = 210
 
-		x = 549
-		y = 330
+		#x = 540
+		#y = 210
 
 		var destination = Vector2(x, y)
 
 		set_action("idle")
-		ball.shot2(destination, 100)
+		ball.shot2(destination, 300)
 	else:
 		var direction = Vector2(1, 0)
 
@@ -212,10 +212,10 @@ func get_player_ball_position():
 	var pos = get_pos()
 
 	if player2:
-		pos.x -= 50
+		pos.x -= 40
 		return pos
 	else:
-		pos.x += 50
+		pos.x += 40
 		return pos
 
 func _fixed_process(delta):

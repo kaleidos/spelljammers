@@ -8,6 +8,7 @@ var anim = ""
 var shot2_active = false
 var shot2_destination
 var untouchable = false
+var shot2_end
 
 func collide(f1, f2):
 	var width = 25
@@ -29,14 +30,28 @@ func is_ball():
 func deactivate():
 	activate = false
 
+func hide():
+	set_hidden(true)
+
+func reset():
+	activate = false
+	show()
+	get_node("sprite").set_scale(Vector2(1, 1))
+
 func arrive_shot2_destination():
 	var ball_pos = get_pos()
 
 	if collide(ball_pos, shot2_destination):
-		if get_pos().x > 330:
-			get_node("/root/control").points(2, 0)
-		else:
-			get_node("/root/control").points(0, 2)
+		if OS.get_ticks_msec() >= shot2_end - 300:
+			set_layer_mask_bit(1, true)
+			set_collision_mask_bit(1, true)
+
+		if get_node("sprite").get_scale().x == 0.8:
+			deactivate()
+			if get_pos().x > 330:
+				get_node("/root/control").points(2, 0)
+			else:
+				get_node("/root/control").points(0, 2)
 
 func _fixed_process(delta):
 	var new_anim = "stop"
@@ -50,18 +65,17 @@ func _fixed_process(delta):
 			new_anim = "shot2"
 			arrive_shot2_destination()
 
-		if !untouchable:
-			if is_colliding() && get_collider().has_method("is_player"):
-				activate = false
+		if is_colliding() && get_collider().has_method("is_player"):
+			activate = false
 
-				var player = get_collider()
+			var player = get_collider()
 
-				player.catch()
-				var position = player.get_player_ball_position()
-				set_pos(position)
-			elif is_colliding():
-				var n = get_collision_normal()
-				direction = n.reflect(direction)
+			player.catch()
+			var position = player.get_player_ball_position()
+			set_pos(position)
+		elif is_colliding():
+			var n = get_collision_normal()
+			direction = n.reflect(direction)
 
 	# Animation
 	if (new_anim != anim):
@@ -87,14 +101,12 @@ func shot2(destination, speed):
 	direction = (shot2_destination - get_pos()).normalized()
 
 	var distance = get_pos().distance_to(shot2_destination)
-
 	var animation = get_node("anim")
-
-	print(animation)
-
 	var animation_time = distance / speed
-
 	var shot2Animation = Animation.new()
+
+	shot2_end = OS.get_ticks_msec() + (animation_time * 1000)
+
 	animation.add_animation("shot2", shot2Animation)
 	animation.set_current_animation("shot2")
 	animation.set_speed(1)
@@ -102,12 +114,13 @@ func shot2(destination, speed):
 	shot2Animation.set_length(animation_time)
 	shot2Animation.set_step(0.1)
 	shot2Animation.set_loop(false)
-	shot2Animation.track_set_path(0, "/root/stadium/ball/AnimatedSprite:transform/scale")
+	shot2Animation.track_set_path(0, "/root/stadium/ball/sprite:transform/scale")
 	shot2Animation.value_track_set_continuous(0, true)
-	shot2Animation.track_insert_key(0, 0.0, Vector2( 0.2, 0.2 ))
-	shot2Animation.track_insert_key(0, animation_time / 2, Vector2( 0.4, 0.4 ))
-	shot2Animation.track_insert_key(0, animation_time, Vector2( 0.1, 0.1 ))
+	shot2Animation.track_insert_key(0, 0.0, Vector2(1, 1))
+	shot2Animation.track_insert_key(0, animation_time / 2, Vector2(4, 4))
+	shot2Animation.track_insert_key(0, animation_time, Vector2(0.8, 0.8))
 
-	untouchable = true
+	set_layer_mask_bit(1, false)
+	set_collision_mask_bit(1, false)
 
 	activate = true

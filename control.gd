@@ -4,6 +4,9 @@ var root
 var player1_points = 0
 var player2_points = 0
 var players_created = false
+var next_round = false
+var time_left_next_round
+var next_player_to_start
 
 var main_loop = true
 
@@ -20,6 +23,20 @@ func _resetPlayer():
 func ready():
 	var _root = get_tree().get_root()
 	root = _root.get_child(_root.get_child_count()-1)
+
+	set_fixed_process(true)
+
+func _fixed_process(delta):
+	if next_round:
+		time_left_next_round -= delta
+
+		if time_left_next_round <= 0:
+			next_round = false
+
+			if next_player_to_start == "player2":
+				reset(true)
+			else:
+				reset(false)
 
 func get_ball():
 	return root.get_node("ball")
@@ -55,9 +72,9 @@ func reset(player2Start):
 	var player1 = create_get_player1()
 	var player2 = create_get_player2()
 
-	var ball = root.get_node("ball")
+	var ball = get_ball()
 
-	ball.deactivate()
+	ball.reset()
 
 	player1.set_pos(PLAYER1_POS)
 	player2.set_pos(PLAYER2_POS)
@@ -99,9 +116,17 @@ func points(p1_points, p2_points):
 	root.get_node("player1_points").set_text(player1_points_str)
 	root.get_node("player2_points").set_text(player2_points_str)
 
+	next_round = true
+	time_left_next_round = 1
+
 	if p1_points > 0:
-		reset(true)
+		next_player_to_start = "player2"
 	elif p2_points > 0:
-		reset(false)
+		next_player_to_start = "player1"
+
+	if p1_points > 2 || p2_points:
+		var ball = get_ball()
+		ball.deactivate()
+		ball.hide()
 
 	show_points(player1_points_str, player2_points_str)
