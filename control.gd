@@ -13,7 +13,11 @@ var player2
 const PLAYER1_POS = Vector2(150, 200)
 const PLAYER2_POS = Vector2(500, 200)
 
-func _ready():
+func _resetPlayer():
+	player1 = null
+	player2 = null
+
+func ready():
 	var _root = get_tree().get_root()
 	root = _root.get_child(_root.get_child_count()-1)
 
@@ -28,7 +32,6 @@ func create_get_player1():
 		var player = load("res://player.tscn")
 		player1 = player.instance()
 		root.add_child(player1)
-
 	return player1
 
 func create_get_player2():
@@ -51,7 +54,7 @@ func show_points(player1_points_str, player2_points_str):
 func reset(player2Start):
 	var player1 = create_get_player1()
 	var player2 = create_get_player2()
-	print(root)
+
 	var ball = root.get_node("ball")
 
 	ball.deactivate()

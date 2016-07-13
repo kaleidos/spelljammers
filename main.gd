@@ -6,4 +6,6 @@ const PLAYER2_POS = Vector2(500, 250)
 
 func _ready():
 	#OS.set_window_fullscreen(true)
+	get_node("/root/control").ready()
+	get_node("/root/control")._resetPlayer()
 	get_node("/root/control").reset(true)
