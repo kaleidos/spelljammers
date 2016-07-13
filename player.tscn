@@ -3,7 +3,7 @@
 [ext_resource path="res://player.gd" type="Script" id=1]
 [ext_resource path="res://ase/standing.png" type="Texture" id=2]
 
-[sub_resource type="ConvexPolygonShape2D" id=1]
+[sub_resource type="ConvexPolygonShape2D" id=3]
 
 custom_solver_bias = 0.0
 points = Vector2Array( -17.5828, -17.3811, 17.5139, -17.5064, 17.4512, 17.4649, -17.6454, 17.5903 )
@@ -22,8 +22,8 @@ tracks/0/keys = { "cont":true, "times":FloatArray( 0, 0.8 ), "transitions":Float
 [node name="player" type="KinematicBody2D"]
 
 input/pickable = false
-shapes/0/shape = SubResource( 1 )
-shapes/0/transform = Matrix32( 1.38349, 0, 0, 1, -0.347801, 0 )
+shapes/0/shape = SubResource( 3 )
+shapes/0/transform = Matrix32( 1.38349, 0, 0, 1.66019, -0.347801, -2.95722 )
 shapes/0/trigger = false
 collision/layers = 3
 collision/mask = 3
@@ -38,8 +38,8 @@ frame = 2
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 
-transform/pos = Vector2( -0.347801, 0 )
-transform/scale = Vector2( 1.38349, 1 )
+transform/pos = Vector2( -0.347801, -2.95722 )
+transform/scale = Vector2( 1.38349, 1.66019 )
 build_mode = 0
 polygon = Vector2Array( -17.5828, -17.3811, 17.5139, -17.5064, 17.4512, 17.4649, -17.6454, 17.5903 )
 shape_range = Vector2( 0, 0 )

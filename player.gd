@@ -54,14 +54,55 @@ func shot(type, is_player2, is_secondary):
 	last_shot_time = OS.get_ticks_msec()
 	var diff = last_shot_time - last_catch_time
 
+	var ball = control.get_ball()
+
 	var speed = 250
 	if diff <= 100:
 		speed = 800
 	elif diff > 100 && diff <= 600:
 		speed = 400
 
+	# a/b = c/x  -> (b/a = c/x) // ((a*c)/b)
 	if is_secondary:
-		pass
+		var player_area_width = 282
+		var x
+		var y
+
+		if diff != 0:
+			if !is_player2:
+				x = 340 + ((100 * player_area_width) / diff)
+				if x > 540:
+					x = 540
+
+			else:
+				x = diff * 100 / player_area_width
+				if x < 70:
+					x = 70
+				elif x > 256:
+					x = 265
+		elif player2:
+			x = 70
+		else:
+			x = 340
+
+		if type == "left-up" || type == "right-up":
+			y = 130
+		elif type == "left-down" || type == "right-down":
+			y = 290
+		elif type == "up":
+			y = 100
+		elif type == "down":
+			y = 330
+		else:
+			y = 210
+
+		x = 549
+		y = 330
+
+		var destination = Vector2(x, y)
+
+		set_action("idle")
+		ball.shot2(destination, 100)
 	else:
 		var direction = Vector2(1, 0)
 
@@ -87,9 +128,8 @@ func shot(type, is_player2, is_secondary):
 			direction = Vector2(-1, 0)
 
 		set_action("idle")
-		var ball = control.get_ball()
 
-		ball.shot(direction, speed)
+		ball.shot(direction.normalized(), speed)
 
 func catch():
 	set_action("catch_ball")
