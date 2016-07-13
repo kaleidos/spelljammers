@@ -1,22 +1,25 @@
 extends Node2D
 
 var root
-var player1_points = 0
-var player2_points = 0
+var main_loop = true
+
+# game
 var players_created = false
 var next_round = false
 var time_left_next_round
 var next_player_to_start
 
-var main_loop = true
-
+# players
 var player1
 var player2
+var player1_config
+var player2_config
+var player1_points = 0
+var player2_points = 0
 
+#TODO check real pos
 const PLAYER1_POS = Vector2(150, 200)
 const PLAYER2_POS = Vector2(500, 200)
-
-var currentScene = null
 
 func _ready():
 	set_fixed_process(true)
@@ -27,11 +30,13 @@ func _fixed_process(delta):
 
 		if time_left_next_round <= 0:
 			next_round = false
-
+			
+			control.reset_players_positions()
+	
 			if next_player_to_start == "player2":
-				reset(true)
+				control.player2_start()			
 			else:
-				reset(false)
+				control.player1_start()			
 				
 func set_scene(scene):
 	root.queue_free()
@@ -57,6 +62,9 @@ func create_get_player1():
 		var player = load("res://player.tscn")
 		player1 = player.instance()
 		root.add_child(player1)
+		
+	player1.set_player_config(player1_config)
+		
 	return player1
 
 func create_get_player2():
@@ -66,6 +74,8 @@ func create_get_player2():
 		root.add_child(player2)
 
 		player2.setPlayer2();
+		
+	player2.set_player_config(player2_config)
 
 	return player2
 
@@ -76,26 +86,36 @@ func show_points(player1_points_str, player2_points_str):
 	poinstaInstance.set_pos(Vector2(253, 150))
 	poinstaInstance.set_points(player1_points_str, player2_points_str)
 
-func reset(player2Start):		
+func set_players_config(new_player1_config, new_player2_config):
+	player1_config = new_player1_config
+	player2_config = new_player2_config
+	
+func reset_players_positions():
 	var player1 = create_get_player1()
 	var player2 = create_get_player2()
 
+	player1.set_pos(PLAYER1_POS)
+	player2.set_pos(PLAYER2_POS)	
+	
+func player1_start():
 	var ball = get_ball()
 
 	ball.reset()
+	
+	var position = player1.get_player_ball_position()
+	ball.set_pos(position)
+	
+	player1.catch()
+	
+func player2_start():
+	var ball = get_ball()
 
-	player1.set_pos(PLAYER1_POS)
-	player2.set_pos(PLAYER2_POS)
-
-	if (!player2Start):
-		var position = player1.get_player_ball_position()
-		ball.set_pos(position)
-		player1.catch()
-
-	if (player2Start):
-		var position = player2.get_player_ball_position()
-		ball.set_pos(position)
-		player2.catch()
+	ball.reset()
+	
+	var position = player2.get_player_ball_position()
+	ball.set_pos(position)
+	
+	player2.catch()
 
 func hide_points():
 	main_loop = true

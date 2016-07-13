@@ -11,9 +11,9 @@ extends KinematicBody2D
 # - when the player dash `block_action_dash` is set to `true`, the dash is enable again when the player
 #   is idle and doens't have any action button pressed
 # - the movement is blocked after shot during x milliseconds, when the movevement is avalible again ignore the main action button util release
-# - TODO: the player is looking to the las place wher he was looking (left-right)
 # - shot strength depends in the time between the catch and the shot
 # - automatic shot after x millisenconds
+# - TODO: the player is looking to the las place wher he was looking (left-right)
 
 var movement = Vector2()
 var state = "idle"
@@ -30,15 +30,15 @@ var block_action_dash = false
 var last_dash_init_time
 var dash_orientation
 
-const PLAYER_SPEED = 220
-const DASH_DURATION = 200
-const DASH_SPEED = PLAYER_SPEED + 300
-const SHOT_BLOCK_MOVEMENT = 300
-const AUTOMATIC_SHOT = 2000
+var player_config
 
 func _ready():
 	control = get_node("/root/control")
 	set_fixed_process(true)
+	
+	
+func set_player_config(config):
+	player_config = config
 
 func set_action(action_name):
 	if action_name == "dash":
@@ -50,17 +50,20 @@ func set_action(action_name):
 
 	state = action_name
 
-func shot(type, is_player2, is_secondary):
+func shot(type, is_secondary):
 	last_shot_time = OS.get_ticks_msec()
 	var diff = last_shot_time - last_catch_time
 
 	var ball = control.get_ball()
 
-	var speed = 250
-	if diff <= 100:
-		speed = 800
-	elif diff > 100 && diff <= 600:
-		speed = 400
+	# max_speed = 1000 - 100ms
+	# lower_speed = 100 - 500ms
+	# 100 -> 1000 = 
+	# 250ms??
+
+	print(speed)
+
+	speed = 400
 
 	# a/b = c/x  -> (b/a = c/x) // ((a*c)/b)
 	if is_secondary:
@@ -105,30 +108,16 @@ func shot(type, is_player2, is_secondary):
 		ball.shot2(destination, 300)
 	else:
 		var direction = Vector2(1, 0)
-
-		if type == "left-up":
-			direction = Vector2(-1.5, -1)
-		elif type == "left-down":
-			direction = Vector2(-1.5, 1)
-		elif type == "right-up":
-			direction = Vector2(1.5, -1)
-		elif type == "right-down":
-			direction = Vector2(1.5, 1)
-		elif type == "down" && is_player2:
-			direction = Vector2(-1.5, 2)
-		elif type == "down" && !is_player2:
-			direction = Vector2(1.5, 2)
-		elif type == "up" && is_player2:
-			direction = Vector2(-1.5, -2)
-		elif type == "up" && !is_player2:
-			direction = Vector2(1.5, -2)
-		elif type == "right":
-			direction = Vector2(1, 0)
-		elif type == "left":
-			direction = Vector2(-1, 0)
+		
+		if type != "straight":
+			direction = player_config.shot_angles[type]
+			
+		var player_area = get_player_area()
+		
+		if player_area == "right":
+			direction.x = -direction.x
 
 		set_action("idle")
-
 		ball.shot(direction.normalized(), speed)
 
 func catch():
@@ -146,7 +135,7 @@ func are_shot_available():
 func are_move_actions_available():
 	var time = OS.get_ticks_msec()
 
-	if (time - last_shot_time) < SHOT_BLOCK_MOVEMENT:
+	if (time - last_shot_time) < player_config.time_movement_block_after_shot:
 		return false
 
 	if state == "idle":
@@ -156,7 +145,14 @@ func are_move_actions_available():
 
 func is_player():
 	return true
+	
+func get_player_area():
+	if player2:
+		return "right"
+	else:
+		return "left"
 
+#TODO
 func setPlayer2():
 	player2 = true
 	get_node("Sprite").set_scale(Vector2(-1, 1))
@@ -217,6 +213,10 @@ func get_player_ball_position():
 	else:
 		pos.x += 40
 		return pos
+		
+func is_automatic_shot():
+	var current_time = OS.get_ticks_msec()
+	return (current_time - last_catch_time) >= player_config.time_automatic_shot
 
 func _fixed_process(delta):
 	if !control.main_loop:
@@ -233,31 +233,19 @@ func _fixed_process(delta):
 	# shot
 	last_catch_time
 
-	if are_shot_available() && (is_action_pressed("main") || is_action_pressed("secondary") || (current_time - last_catch_time) >= AUTOMATIC_SHOT):
+	if are_shot_available() && (is_action_pressed("main") || is_action_pressed("secondary") || is_automatic_shot()):
 		var is_secondary = is_action_pressed("secondary")
 
-		if player2:
-			if is_action_pressed("left") && is_action_pressed("up"):
-				shot("left-up", true, is_secondary)
-			elif is_action_pressed("left") && is_action_pressed("down"):
-				shot("left-down", true, is_secondary)
-			elif is_action_pressed("up"):
-				shot("up", true, is_secondary)
-			elif is_action_pressed("down"):
-				shot("down", true, is_secondary)
-			else:
-				shot("left", true, is_secondary)
+		if is_action_pressed("left") && is_action_pressed("up"):
+			shot("up-middle", is_secondary)
+		elif is_action_pressed("left") && is_action_pressed("down"):
+			shot("down-middle", is_secondary)
+		elif is_action_pressed("up"):
+			shot("up", is_secondary)
+		elif is_action_pressed("down"):
+			shot("down", is_secondary)
 		else:
-			if is_action_pressed("right") && is_action_pressed("up"):
-				shot("right-up", false, is_secondary)
-			elif is_action_pressed("right") && is_action_pressed("down"):
-				shot("right-down", false, is_secondary)
-			elif is_action_pressed("up"):
-				shot("up", false, is_secondary)
-			elif is_action_pressed("down"):
-				shot("down", false, is_secondary)
-			else:
-				shot("right", false, is_secondary)
+			shot("straight", is_secondary)
 
 	# movement
 	movement.x = 0
@@ -267,7 +255,7 @@ func _fixed_process(delta):
 	var initialY = movement.y
 
 	# check dash duration
-	if state == "dash" && (current_time - last_dash_init_time) >= DASH_DURATION:
+	if state == "dash" && (current_time - last_dash_init_time) >= player_config.dash_duration:
 		set_action("idle")
 
 	if are_move_actions_available():
@@ -278,35 +266,35 @@ func _fixed_process(delta):
 		# move
 		else:
 			if is_action_pressed("right"):
-				movement.x = PLAYER_SPEED
+				movement.x = player_config.player_speed
 			if is_action_pressed("left"):
-				movement.x = -PLAYER_SPEED
+				movement.x = -player_config.player_speed
 			if is_action_pressed("up"):
-				movement.y = -PLAYER_SPEED
+				movement.y = -player_config.player_speed
 			if is_action_pressed("down"):
-				movement.y = PLAYER_SPEED
+				movement.y = player_config.player_speed
 	#dash
 	elif state == "dash":
 			if dash_orientation == "up-left":
-				movement.y = -DASH_SPEED
-				movement.x = -DASH_SPEED
+				movement.y = -player_config.dash_speed
+				movement.x = -player_config.dash_speed
 			elif dash_orientation == "up-right":
-				movement.y = -DASH_SPEED
-				movement.x = DASH_SPEED
+				movement.y = -player_config.dash_speed
+				movement.x = player_config.dash_speed
 			elif dash_orientation == "up":
-				movement.y = -DASH_SPEED
+				movement.y = -player_config.dash_speed
 			if dash_orientation == "down-left":
-				movement.y = DASH_SPEED
-				movement.x = -DASH_SPEED
+				movement.y = player_config.dash_speed
+				movement.x = -player_config.dash_speed
 			elif dash_orientation == "down-right":
-				movement.y = DASH_SPEED
-				movement.x = DASH_SPEED
+				movement.y = player_config.dash_speed
+				movement.x = player_config.dash_speed
 			elif dash_orientation == "down":
-				movement.y = DASH_SPEED
+				movement.y = player_config.dash_speed
 			elif dash_orientation == "left":
-				movement.x = -DASH_SPEED
+				movement.x = -player_config.dash_speed
 			elif dash_orientation == "right":
-				movement.x = DASH_SPEED
+				movement.x = player_config.dash_speed
 
 	if initialX != movement.x || initialY != movement.y:
 		var motion = movement * delta
