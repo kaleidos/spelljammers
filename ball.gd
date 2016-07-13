@@ -3,7 +3,7 @@ extends KinematicBody2D
 var movement = Vector2()
 var direction = Vector2(-1, 0)
 var activate = true
-var ball_speed = 300
+var ball_speed
 var anim = ""
 
 func _ready():
@@ -45,29 +45,8 @@ func _fixed_process(delta):
 		anim = new_anim
 
 
-func shot(type, player2):
-	direction = Vector2(1, 0)
-
-	if type == "left-up":
-		direction = Vector2(-1.5, -1)
-	elif type == "left-down":
-		direction = Vector2(-1.5, 1)
-	elif type == "right-up":
-		direction = Vector2(1.5, -1)
-	elif type == "right-down":
-		direction = Vector2(1.5, 1)
-	elif type == "down" && player2:
-		direction = Vector2(-1.5, 2)
-	elif type == "down" && !player2:
-		direction = Vector2(1.5, 2)
-	elif type == "up" && player2:
-		direction = Vector2(-1.5, -2)
-	elif type == "up" && !player2:
-		direction = Vector2(1.5, -2)
-	elif type == "right":
-		direction = Vector2(1, 0)
-	elif type == "left":
-		direction = Vector2(-1, 0)
-
+func shot(shot_direction, speed):
+	ball_speed = speed
+	direction = shot_direction
 	activate = true
 

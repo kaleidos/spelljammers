@@ -12,7 +12,7 @@ extends KinematicBody2D
 #   is idle and doens't have any action button pressed
 # - the movement is blocked after shot during x milliseconds, when the movevement is avalible again ignore the main action button util release
 # - TODO: the player is looking to the las place wher he was looking (left-right)
-# - TODO: shot strength depends in the time between the catch and the shot
+# - shot strength depends in the time between the catch and the shot
 # - automatic shot after x millisenconds
 
 var movement = Vector2()
@@ -49,6 +49,45 @@ func set_action(action_name):
 		block_action_dash = true
 
 	state = action_name
+
+# 250 - 800
+func shot(type, is_player2):
+	last_shot_time = OS.get_ticks_msec()
+	var diff = last_shot_time - last_catch_time
+
+	var speed = 250
+	if diff <= 100:
+		speed = 800
+	elif diff > 100 && diff <= 600:
+		speed = 400
+
+	var direction = Vector2(1, 0)
+
+	if type == "left-up":
+		direction = Vector2(-1.5, -1)
+	elif type == "left-down":
+		direction = Vector2(-1.5, 1)
+	elif type == "right-up":
+		direction = Vector2(1.5, -1)
+	elif type == "right-down":
+		direction = Vector2(1.5, 1)
+	elif type == "down" && is_player2:
+		direction = Vector2(-1.5, 2)
+	elif type == "down" && !is_player2:
+		direction = Vector2(1.5, 2)
+	elif type == "up" && is_player2:
+		direction = Vector2(-1.5, -2)
+	elif type == "up" && !is_player2:
+		direction = Vector2(1.5, -2)
+	elif type == "right":
+		direction = Vector2(1, 0)
+	elif type == "left":
+		direction = Vector2(-1, 0)
+
+	set_action("idle")
+	var ball = control.get_ball()
+
+	ball.shot(direction, speed)
 
 func catch():
 	set_action("catch_ball")
@@ -155,31 +194,26 @@ func _fixed_process(delta):
 	if are_shot_available() && (is_action_pressed("main") || (current_time - last_catch_time) >= AUTOMATIC_SHOT):
 		if player2:
 			if is_action_pressed("left") && is_action_pressed("up"):
-				control.shot("left-up", true)
+				shot("left-up", true)
 			elif is_action_pressed("left") && is_action_pressed("down"):
-				control.shot("left-down", true)
+				shot("left-down", true)
 			elif is_action_pressed("up"):
-				control.shot("up", true)
+				shot("up", true)
 			elif is_action_pressed("down"):
-				control.shot("down", true)
+				shot("down", true)
 			else:
-				control.shot("left", true)
-
-			set_action("idle")
+				shot("left", true)
 		else:
 			if is_action_pressed("right") && is_action_pressed("up"):
-				control.shot("right-up", false)
+				shot("right-up", false)
 			elif is_action_pressed("right") && is_action_pressed("down"):
-				control.shot("right-down", false)
+				shot("right-down", false)
 			elif is_action_pressed("up"):
-				control.shot("up", false)
+				shot("up", false)
 			elif is_action_pressed("down"):
-				control.shot("down", false)
+				shot("down", false)
 			else:
-				control.shot("right", false)
-
-			last_shot_time = current_time
-			set_action("idle")
+				shot("right", false)
 
 	# movement
 	movement.x = 0
