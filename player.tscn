@@ -33,7 +33,8 @@ script/script = ExtResource( 1 )
 [node name="Sprite" type="Sprite" parent="."]
 
 texture = ExtResource( 2 )
-hframes = 8
+hframes = 10
+frame = 2
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 
