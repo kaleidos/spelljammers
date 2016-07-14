@@ -378,7 +378,7 @@ func _fixed_process(delta):
 			if axis_pos.y > AXIS_SENSITIVITY:
 				new_anim = "walk-front"
 			elif axis_pos.y < -AXIS_SENSITIVITY:
-				new_anim = "walk-front"
+				new_anim = "walk-back"
 				
 			if axis_pos.x > AXIS_SENSITIVITY:
 				new_anim = "walk-lateral"
