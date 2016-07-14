@@ -23,31 +23,31 @@ const PLAYER2_POS = Vector2(500, 200)
 
 func _ready():
 	set_fixed_process(true)
-	
+
 func _fixed_process(delta):
 	if next_round:
 		time_left_next_round -= delta
 
 		if time_left_next_round <= 0:
 			next_round = false
-			
+
 			control.reset_players_positions()
-	
+
 			if next_player_to_start == "player2":
-				control.player2_start()			
+				control.player2_start()
 			else:
-				control.player1_start()			
-				
+				control.player1_start()
+
 func set_scene(scene):
 	root.queue_free()
 	var s = ResourceLoader.load(scene)
 	var newroot = s.instance()
-	get_tree().get_root().add_child(newroot)	
-	
+	get_tree().get_root().add_child(newroot)
+
 func init_scene():
 	var _root = get_tree().get_root()
-	root = _root.get_child(_root.get_child_count()-1)							
-	
+	root = _root.get_child(_root.get_child_count()-1)
+
 	player1 = null
 	player2 = null
 
@@ -62,9 +62,11 @@ func create_get_player1():
 		var player = load("res://player.tscn")
 		player1 = player.instance()
 		root.add_child(player1)
-		
+
+		player1.set_player_area("left");
+
 	player1.set_player_config(player1_config)
-		
+
 	return player1
 
 func create_get_player2():
@@ -73,8 +75,8 @@ func create_get_player2():
 		player2 = player.instance()
 		root.add_child(player2)
 
-		player2.setPlayer2();
-		
+		player2.set_player_area("right");
+
 	player2.set_player_config(player2_config)
 
 	return player2
@@ -89,32 +91,32 @@ func show_points(player1_points_str, player2_points_str):
 func set_players_config(new_player1_config, new_player2_config):
 	player1_config = new_player1_config
 	player2_config = new_player2_config
-	
+
 func reset_players_positions():
 	var player1 = create_get_player1()
 	var player2 = create_get_player2()
 
 	player1.set_pos(PLAYER1_POS)
-	player2.set_pos(PLAYER2_POS)	
-	
+	player2.set_pos(PLAYER2_POS)
+
 func player1_start():
 	var ball = get_ball()
 
 	ball.reset()
-	
+
 	var position = player1.get_player_ball_position()
 	ball.set_pos(position)
-	
+
 	player1.catch()
-	
+
 func player2_start():
 	var ball = get_ball()
 
 	ball.reset()
-	
+
 	var position = player2.get_player_ball_position()
 	ball.set_pos(position)
-	
+
 	player2.catch()
 
 func hide_points():

@@ -17,7 +17,7 @@ extends KinematicBody2D
 
 var movement = Vector2()
 var state = "idle"
-var player2 = false
+var player_area = "left"
 var control
 
 # shot
@@ -35,8 +35,8 @@ var player_config
 func _ready():
 	control = get_node("/root/control")
 	set_fixed_process(true)
-	
-	
+
+
 func set_player_config(config):
 	player_config = config
 
@@ -50,29 +50,43 @@ func set_action(action_name):
 
 	state = action_name
 
+func search_speed(list_speeds, type, time):
+	for shot_config in list_speeds:
+		if "angles" in shot_config && type in shot_config.angles:
+			if "max" in shot_config && shot_config["min"] <= time && shot_config["max"] >= time:
+				return shot_config.speed
+			elif not "max" in shot_config && shot_config["min"] <= time:
+				return shot_config.speed
+		elif not "angles" in shot_config:
+			if "max" in shot_config && shot_config["min"] <= time && shot_config["max"] >= time:
+				return shot_config.speed
+			elif not "max" in shot_config && shot_config["min"] <= time:
+				return shot_config.speed
+
+func get_speed(type, time):
+	if type == "straight":
+		return search_speed(player_config.shots_strength.normal_shots, type, time)
+	elif "angle_shots" in player_config.shots_strength:
+		return search_speed(player_config.shots_strength.angle_shots, type, time)
+	else:
+		return search_speed(player_config.shots_strength.normal_shots, type, time)
+
 func shot(type, is_secondary):
 	last_shot_time = OS.get_ticks_msec()
 	var diff = last_shot_time - last_catch_time
-
 	var ball = control.get_ball()
-
-	# max_speed = 1000 - 100ms
-	# lower_speed = 100 - 500ms
-	# 100 -> 1000 = 
-	# 250ms??
-
-	print(speed)
-
-	speed = 400
+	var speed = get_speed(type, diff)
 
 	# a/b = c/x  -> (b/a = c/x) // ((a*c)/b)
 	if is_secondary:
+		#TODO
+		var player_area = get_player_area()
 		var player_area_width = 282
 		var x
 		var y
 
 		if diff != 0:
-			if !is_player2:
+			if player_area == "left":
 				x = 340 + ((100 * player_area_width) / diff)
 				if x > 540:
 					x = 540
@@ -83,7 +97,7 @@ func shot(type, is_secondary):
 					x = 70
 				elif x > 256:
 					x = 265
-		elif player2:
+		elif player_area == "right":
 			x = 70
 		else:
 			x = 340
@@ -108,16 +122,17 @@ func shot(type, is_secondary):
 		ball.shot2(destination, 300)
 	else:
 		var direction = Vector2(1, 0)
-		
+
 		if type != "straight":
 			direction = player_config.shot_angles[type]
-			
+
 		var player_area = get_player_area()
-		
+
 		if player_area == "right":
 			direction.x = -direction.x
 
 		set_action("idle")
+
 		ball.shot(direction.normalized(), speed)
 
 func catch():
@@ -145,17 +160,15 @@ func are_move_actions_available():
 
 func is_player():
 	return true
-	
-func get_player_area():
-	if player2:
-		return "right"
-	else:
-		return "left"
 
-#TODO
-func setPlayer2():
-	player2 = true
-	get_node("Sprite").set_scale(Vector2(-1, 1))
+func get_player_area():
+	return player_area
+
+func set_player_area(area):
+	player_area = area
+
+	if player_area == "right":
+		get_node("Sprite").set_scale(Vector2(-1, 1))
 
 func is_action_pressed(action):
 	return Input.is_action_pressed(get_player_event(action))
@@ -199,7 +212,7 @@ func get_player_orientation():
 		return "right"
 
 func get_player_event(event):
-	if player2:
+	if player_area == "right":
 		return "player2_" + event
 	else:
 		return "player1_" + event
@@ -207,13 +220,13 @@ func get_player_event(event):
 func get_player_ball_position():
 	var pos = get_pos()
 
-	if player2:
+	if player_area == "right":
 		pos.x -= 40
 		return pos
 	else:
 		pos.x += 40
 		return pos
-		
+
 func is_automatic_shot():
 	var current_time = OS.get_ticks_msec()
 	return (current_time - last_catch_time) >= player_config.time_automatic_shot
@@ -236,9 +249,9 @@ func _fixed_process(delta):
 	if are_shot_available() && (is_action_pressed("main") || is_action_pressed("secondary") || is_automatic_shot()):
 		var is_secondary = is_action_pressed("secondary")
 
-		if is_action_pressed("left") && is_action_pressed("up"):
+		if (is_action_pressed("left") || is_action_pressed("right")) && is_action_pressed("up"):
 			shot("up-middle", is_secondary)
-		elif is_action_pressed("left") && is_action_pressed("down"):
+		elif (is_action_pressed("left") || is_action_pressed("right")) && is_action_pressed("down"):
 			shot("down-middle", is_secondary)
 		elif is_action_pressed("up"):
 			shot("up", is_secondary)
