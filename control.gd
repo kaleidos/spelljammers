@@ -2,6 +2,7 @@ extends Node2D
 
 var root
 var main_loop = true
+var ia_active = false
 
 # game
 var players_created = false
@@ -37,6 +38,12 @@ func _fixed_process(delta):
 				control.player2_start()
 			else:
 				control.player1_start()
+
+	if ia_active:
+		IA()
+
+func enable_ia():
+	ia_active = true
 
 func set_scene(scene):
 	root.queue_free()
@@ -160,3 +167,17 @@ func points(p1_points, p2_points):
 		ball.hide()
 
 	show_points(player1_points_str, player2_points_str)
+
+func IA():
+	var shots_types = ["straight", "up-middle", "down-middle", "up", "down"]
+	var ball_pos = get_ball().get_pos()
+
+	if ball_pos.x > 400 && !player2.has_the_ball():
+		player2.set_pos(ball_pos)
+	elif player2.has_the_ball():
+		var time = OS.get_ticks_msec()
+		var last_shot = player2.get_last_catch_time()
+
+		if time - last_shot > 500:
+			var shot_index = randi() % shots_types.size()
+			player2.shot(shots_types[shot_index], false)

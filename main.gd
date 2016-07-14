@@ -59,3 +59,5 @@ func _ready():
 	control.set_players_config(player1_config, player2_config)
 	control.reset_players_positions()
 	control.player1_start()
+
+	control.enable_ia()

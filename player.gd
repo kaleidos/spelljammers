@@ -36,9 +36,14 @@ func _ready():
 	control = get_node("/root/control")
 	set_fixed_process(true)
 
+func has_the_ball():
+	return state == "catch_ball"
 
 func set_player_config(config):
 	player_config = config
+
+func get_last_catch_time():
+	return last_catch_time
 
 func set_action(action_name):
 	if action_name == "dash":

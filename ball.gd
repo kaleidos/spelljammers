@@ -7,7 +7,6 @@ var ball_speed
 var anim = ""
 var shot2_active = false
 var shot2_destination
-var untouchable = false
 var shot2_end
 
 func collide(f1, f2):
