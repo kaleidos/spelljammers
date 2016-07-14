@@ -37,3 +37,25 @@ func _ready():
 	control.player1_start()
 
 	control.enable_ia()
+
+func _on_3points( body ):
+	if !body.has_method("is_ball"):
+		return
+	control = get_node("/root/control")
+
+	if get_pos().x > 300:
+		control.points(3, 0)
+	else:
+		control.points(0, 3)
+
+
+func _on_5points( body ):
+	if !body.has_method("is_ball"):
+		return
+
+	control = get_node("/root/control")
+
+	if get_pos().x > 300:
+		control.points(5, 0)
+	else:
+		control.points(0, 5)
