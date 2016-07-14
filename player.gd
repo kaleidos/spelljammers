@@ -19,6 +19,8 @@ var movement = Vector2()
 var state = "idle"
 var player_area = "left"
 var control
+var anim
+const SHOT_DURATION = 500 #TODO: configuratble?
 
 # shot
 var block_action_shot = false
@@ -226,10 +228,10 @@ func get_player_ball_position():
 	var pos = get_pos()
 
 	if player_area == "right":
-		pos.x -= 40
+		pos.x -= 5
 		return pos
 	else:
-		pos.x += 40
+		pos.x += 5
 		return pos
 
 func is_automatic_shot():
@@ -237,10 +239,15 @@ func is_automatic_shot():
 	return (current_time - last_catch_time) >= player_config.time_automatic_shot
 
 func _fixed_process(delta):
+	var new_anim = "standing"
+
 	if !control.main_loop:
 		return
 
 	var current_time = OS.get_ticks_msec()
+
+	if last_shot_time > 0 && last_shot_time - current_time <= SHOT_DURATION:
+		new_anim = "shot"
 
 	if !is_action_key_pressed() && state == 'idle':
 		block_action_dash = false
@@ -249,8 +256,6 @@ func _fixed_process(delta):
 		block_action_shot = false
 
 	# shot
-	last_catch_time
-
 	if are_shot_available() && (is_action_pressed("main") || is_action_pressed("secondary") || is_automatic_shot()):
 		var is_secondary = is_action_pressed("secondary")
 
@@ -264,6 +269,8 @@ func _fixed_process(delta):
 			shot("down", is_secondary)
 		else:
 			shot("straight", is_secondary)
+
+		new_anim = "shot"
 
 	# movement
 	movement.x = 0
@@ -317,3 +324,12 @@ func _fixed_process(delta):
 	if initialX != movement.x || initialY != movement.y:
 		var motion = movement * delta
 		move(motion)
+
+	# Animation
+	if (new_anim != anim):
+		if (new_anim == 'stop'):
+			get_node("anim").stop()
+		else:
+			get_node("anim").play(new_anim)
+
+		anim = new_anim

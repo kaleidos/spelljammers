@@ -170,14 +170,15 @@ func points(p1_points, p2_points):
 
 func IA():
 	var shots_types = ["straight", "up-middle", "down-middle", "up", "down"]
-	var ball_pos = get_ball().get_pos()
+	var ball = get_ball()
+	var ball_pos = ball.get_pos()
 
 	if ball_pos.x > 400 && !player2.has_the_ball():
 		player2.set_pos(ball_pos)
 	elif player2.has_the_ball():
 		var time = OS.get_ticks_msec()
-		var last_shot = player2.get_last_catch_time()
+		var last_catch = player2.get_last_catch_time()
 
-		if time - last_shot > 500:
+		if time - last_catch > 500:
 			var shot_index = randi() % shots_types.size()
 			player2.shot(shots_types[shot_index], false)

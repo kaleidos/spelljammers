@@ -61,4 +61,4 @@ func _ready():
 	control.reset_players_positions()
 	control.player1_start()
 
-	control.enable_ia()
+	#control.enable_ia()
