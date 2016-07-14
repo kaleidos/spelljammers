@@ -23,6 +23,7 @@ var anim
 var player_orientation = "right"
 
 const SHOT_DURATION = 500 #TODO: configuratble?
+const AXIS_SENSITIVITY = 0.3
 
 # shot
 var block_action_shot = false
@@ -76,91 +77,126 @@ func set_action(action_name):
 		block_action_dash = true
 
 	state = action_name
+#
+#func search_speed(list_speeds, type, time):
+#	for shot_config in list_speeds:
+#		if "angles" in shot_config && type in shot_config.angles:
+#			if "max" in shot_config && shot_config["min"] <= time && shot_config["max"] >= time:
+#				return shot_config.speed
+#			elif not "max" in shot_config && shot_config["min"] <= time:
+#				return shot_config.speed
+#		elif not "angles" in shot_config:
+#			if "max" in shot_config && shot_config["min"] <= time && shot_config["max"] >= time:
+#				return shot_config.speed
+#			elif not "max" in shot_config && shot_config["min"] <= time:
+#				return shot_config.speed
+#
+#func get_speed(player_axis, time):
+#	if type == "straight":
+#		return search_speed(player_config.shots_strength.normal_shots, type, time)
+#	elif "normal_angle_shots" in player_config.shots_strength:
+#		return search_speed(player_config.shots_strength.normal_angle_shots, type, time)
+#	else:
+#		return search_speed(player_config.shots_strength.normal_shots, type, time)
 
-func search_speed(list_speeds, type, time):
+#	"shots_strength": {
+#		"normal_shots": [
+#			{"min_angle": 0.9, "max_angle": 1, "speeds": [
+#				{"min": 0, "max": 100, "speed": 700},
+#				{"min": 100, "max": 300, "speed": 600},
+#				{"min": 300, "speed": 500}
+#			]},
+#			{"min_angle": 0.2, "max_angle": 0.9, "speeds": [
+#				{"min": 0, "speed": 500}
+#			]}
+#		]
+#	}
+
+func search_speed_by_time(list_speeds, time):
 	for shot_config in list_speeds:
-		if "angles" in shot_config && type in shot_config.angles:
-			if "max" in shot_config && shot_config["min"] <= time && shot_config["max"] >= time:
-				return shot_config.speed
-			elif not "max" in shot_config && shot_config["min"] <= time:
-				return shot_config.speed
-		elif not "angles" in shot_config:
-			if "max" in shot_config && shot_config["min"] <= time && shot_config["max"] >= time:
-				return shot_config.speed
-			elif not "max" in shot_config && shot_config["min"] <= time:
-				return shot_config.speed
+		if "max" in shot_config && shot_config["min"] <= time && shot_config["max"] >= time:
+			return shot_config.speed
+		elif not "max" in shot_config && shot_config["min"] <= time:
+			return shot_config.speed
 
-func get_speed(type, time):
-	if type == "straight":
-		return search_speed(player_config.shots_strength.normal_shots, type, time)
-	elif "normal_angle_shots" in player_config.shots_strength:
-		return search_speed(player_config.shots_strength.normal_angle_shots, type, time)
-	else:
-		return search_speed(player_config.shots_strength.normal_shots, type, time)
+func get_speed(player_axis, time):
+	if player_axis.x < 0:
+		player_axis.x = -player_axis.x
+	
+	if !is_axis_pressed():
+		return search_speed_by_time(player_config.shots_strength.straight, time)
+	
+	for shot_config in player_config.shots_strength.normal_shots:	
+		if player_axis.x >= shot_config.min_angle && shot_config.max_angle >= player_axis.x:
+			return search_speed_by_time(shot_config.speeds, time)
 
-func shot(type, is_secondary):
+func shot(player_axis, is_secondary):
 	last_shot_time = OS.get_ticks_msec()
+	
+	var player_area = get_player_area()
 	var diff = last_shot_time - last_catch_time
 	var ball = control.get_ball()
-	var speed = get_speed(type, diff)
+	
+	#normalize shot angle
+	if player_area  == "left":
+		if player_axis.x < player_config.min_shot_angle:
+			player_axis.x = player_config.min_shot_angle
+	elif player_area  == "right":
+		if player_axis.x > -player_config.min_shot_angle:
+			player_axis.x = -player_config.min_shot_angle
+		
+	
+	var speed = get_speed(player_axis, diff)
+	print(speed)
 
 	# a/b = c/x  -> (b/a = c/x) // ((a*c)/b)
 	if is_secondary:
-		#TODO
-		var player_area = get_player_area()
-		var player_area_width = 282
-		var x
-		var y
-
-		if diff != 0:
-			if player_area == "left":
-				x = 340 + ((100 * player_area_width) / diff)
-				if x > 540:
-					x = 540
-
-			else:
-				x = diff * 100 / player_area_width
-				if x < 70:
-					x = 70
-				elif x > 256:
-					x = 265
-		elif player_area == "right":
-			x = 70
-		else:
-			x = 340
-
-		if type == "left-up" || type == "right-up":
-			y = 130
-		elif type == "left-down" || type == "right-down":
-			y = 290
-		elif type == "up":
-			y = 100
-		elif type == "down":
-			y = 330
-		else:
-			y = 210
-
-		#x = 540
-		#y = 210
-
-		var destination = Vector2(x, y)
-
-		set_action("idle")
-		ball.shot2(destination, speed)
+		pass
+#		#TODO
+#		var player_area = get_player_area()
+#		var player_area_width = 282
+#		var x
+#		var y
+#
+#		if diff != 0:
+#			if player_area == "left":
+#				x = 340 + ((100 * player_area_width) / diff)
+#				if x > 540:
+#					x = 540
+#
+#			else:
+#				x = diff * 100 / player_area_width
+#				if x < 70:
+#					x = 70
+#				elif x > 256:
+#					x = 265
+#		elif player_area == "right":
+#			x = 70
+#		else:
+#			x = 340
+#
+#		if type == "left-up" || type == "right-up":
+#			y = 130
+#		elif type == "left-down" || type == "right-down":
+#			y = 290
+#		elif type == "up":
+#			y = 100
+#		elif type == "down":
+#			y = 330
+#		else:
+#			y = 210
+#
+#		#x = 540
+#		#y = 210
+#
+#		var destination = Vector2(x, y)
+#
+#		set_action("idle")
+#		ball.shot2(destination, speed)
 	else:
-		var direction = Vector2(1, 0)
-
-		if type != "straight":
-			direction = player_config.shot_angles[type]
-
-		var player_area = get_player_area()
-
-		if player_area == "right":
-			direction.x = -direction.x
-
 		set_action("idle")
-
-		ball.shot(direction.normalized(), speed)
+		ball.shot(player_axis.normalized(), speed)
+		
 
 func catch():
 	reset_player_orientation()
@@ -210,15 +246,13 @@ func is_action_key_pressed():
 	return false
 
 func is_axis_pressed():
-	if is_action_pressed("right"):
-		return true
-	elif is_action_pressed("left"):
-		return true
-	elif is_action_pressed("up"):
-		return true
-	elif is_action_pressed("down"):
+	var axis_pos = get_axis_pos()
+	if axis_pos.x > AXIS_SENSITIVITY || axis_pos.x < -AXIS_SENSITIVITY:
 		return true
 
+	if axis_pos.y > AXIS_SENSITIVITY || axis_pos.y  < -AXIS_SENSITIVITY:
+		return true
+		
 	return false
 
 func get_player_orientation():
@@ -251,15 +285,19 @@ func get_player_ball_position():
 	var pos = get_pos()
 
 	if player_area == "right":
-		pos.x -= 5
+		pos.x -= 40
 		return pos
 	else:
-		pos.x += 5
+		pos.x += 40
 		return pos
 
 func is_automatic_shot():
 	var current_time = OS.get_ticks_msec()
 	return (current_time - last_catch_time) >= player_config.time_automatic_shot
+	
+func get_axis_pos():
+	var player_device = get_player_device()
+	return  Vector2(Input.get_joy_axis(player_device, 0), Input.get_joy_axis(player_device, 1))
 
 func shot_animation():
 	pass
@@ -279,6 +317,12 @@ func set_animation(new_anim):
 				get_node("anim").play(new_anim)
 
 		anim = new_anim
+		
+func get_player_device():
+	if get_player_area() == "left":
+		return 0
+	elif get_player_area() == "right":
+		return 1
 
 func _fixed_process(delta):
 	var new_anim = "standing"
@@ -286,11 +330,8 @@ func _fixed_process(delta):
 
 	if !control.main_loop:
 		return
-
+		
 	var current_time = OS.get_ticks_msec()
-
-#   if last_shot_time > 0 && last_shot_time - current_time <= SHOT_DURATION:
-#		new_anim = "shot"
 
 	if !is_action_key_pressed() && state == 'idle':
 		block_action_dash = false
@@ -301,22 +342,9 @@ func _fixed_process(delta):
 	# shot
 	if are_shot_available() && (is_action_pressed("main") || is_action_pressed("secondary") || is_automatic_shot()):
 		var is_secondary = is_action_pressed("secondary")
-
-		if (is_action_pressed("left") || is_action_pressed("right")) && is_action_pressed("up"):
-			shot("up-middle", is_secondary)
-		elif (is_action_pressed("left") || is_action_pressed("right")) && is_action_pressed("down"):
-			shot("down-middle", is_secondary)
-		elif is_action_pressed("up"):
-			shot("up", is_secondary)
-		elif is_action_pressed("down"):
-			shot("down", is_secondary)
-		else:
-			shot("straight", is_secondary)
-
-		#new_anim = "shot"
-
-	if new_anim == "shot":
-		shot_animation()
+		var player_axis = get_axis_pos()
+		
+		shot(player_axis, is_secondary)
 
 	# movement
 	movement.x = 0
@@ -334,70 +362,63 @@ func _fixed_process(delta):
 
 		if is_action_pressed("main") && is_axis_pressed() && !block_action_dash:
 			last_dash_init_time = current_time
-			dash_orientation = get_player_orientation()
+			#dash_orientation = get_player_orientation()
+			dash_orientation = get_axis_pos()
 			set_action("dash")
 		# move
 		else:
-			if is_action_pressed("right"):
-				movement.x = player_config.player_speed
-				new_anim = "walk-lateral"
+			var axis_pos = get_axis_pos()
 
+			if axis_pos.x > AXIS_SENSITIVITY || axis_pos.x < -AXIS_SENSITIVITY:
+				movement.x = axis_pos.x * player_config.player_speed
+	
+			if axis_pos.y > AXIS_SENSITIVITY || axis_pos.y  < -AXIS_SENSITIVITY:
+				movement.y = axis_pos.y * player_config.player_speed
+								
+			if axis_pos.y > AXIS_SENSITIVITY:
+				new_anim = "walk-front"
+			elif axis_pos.y < -AXIS_SENSITIVITY:
+				new_anim = "walk-front"
+				
+			if axis_pos.x > AXIS_SENSITIVITY:
+				new_anim = "walk-lateral"
 				set_player_orientation("right")
-
-			if is_action_pressed("left"):
-				movement.x = -player_config.player_speed
-				new_anim = "walk-lateral"
-
-				set_player_orientation("left")
-			if is_action_pressed("up"):
-				movement.y = -player_config.player_speed
-				new_anim = "walk-front"
-			if is_action_pressed("down"):
-				movement.y = player_config.player_speed
-				new_anim = "walk-front"
+			elif axis_pos.x < -AXIS_SENSITIVITY:
+				new_anim = "walk-lateral"	
+				set_player_orientation("left")							
+				
 	#dash
 	elif state == "dash":
-			if dash_orientation == "up-left":
-				movement.y = -player_config.dash_speed
-				movement.x = -player_config.dash_speed
-			elif dash_orientation == "up-right":
-				movement.y = -player_config.dash_speed
-				movement.x = player_config.dash_speed
-			elif dash_orientation == "up":
-				movement.y = -player_config.dash_speed
-			if dash_orientation == "down-left":
-				movement.y = player_config.dash_speed
-				movement.x = -player_config.dash_speed
-			elif dash_orientation == "down-right":
-				movement.y = player_config.dash_speed
-				movement.x = player_config.dash_speed
-			elif dash_orientation == "down":
-				movement.y = player_config.dash_speed
-			elif dash_orientation == "left":
-				movement.x = -player_config.dash_speed
-			elif dash_orientation == "right":
-				movement.x = player_config.dash_speed
-
-#	if get_player_area() == 'left':
-#		#var absJoyPos : Vector2 = Vector2( Mathf.Abs( moveJoystick.position.x ), Mathf.Abs( moveJoystick.position.y ) );
-#		if Input.get_joy_axis(0, 0) > 0.3:
-#			movement.x = abs(Input.get_joy_axis(0, 0)) * player_config.player_speed
-#		elif Input.get_joy_axis(0, 0) < -0.3:
-#			movement.x = -abs(Input.get_joy_axis(0, 0)) * player_config.player_speed
-#
-#		if Input.get_joy_axis(0, 1) > 0.3:
-#			movement.y = abs(Input.get_joy_axis(0, 1)) * player_config.player_speed
-#		elif  Input.get_joy_axis(0, 1) < -0.3:
-#			movement.y = -abs(Input.get_joy_axis(0, 1)) * player_config.player_speed
-#		#movement.x = Input.get_joy_axis(0, 0)
-#		#movement.y = abs(Input.get_joy_axis(0, 1)) * player_config.player_speed
-#		#movement.y = Input.get_joy_axis(0, 1)
-#
-#		print(movement.x)
-#		#print(movement.y)
+		print("daaaaash")
+		movement = dash_orientation * player_config.dash_speed
+		
+#			if dash_orientation == "up-left":
+#				movement.y = -player_config.dash_speed
+#				movement.x = -player_config.dash_speed
+#			elif dash_orientation == "up-right":
+#				movement.y = -player_config.dash_speed
+#				movement.x = player_config.dash_speed
+#			elif dash_orientation == "up":
+#				movement.y = -player_config.dash_speed
+#			if dash_orientation == "down-left":
+#				movement.y = player_config.dash_speed
+#				movement.x = -player_config.dash_speed
+#			elif dash_orientation == "down-right":
+#				movement.y = player_config.dash_speed
+#				movement.x = player_config.dash_speed
+#			elif dash_orientation == "down":
+#				movement.y = player_config.dash_speed
+#			elif dash_orientation == "left":
+#				movement.x = -player_config.dash_speed
+#			elif dash_orientation == "right":
+#				movement.x = player_config.dash_speed
 
 	if initialX != movement.x || initialY != movement.y:
 		var motion = movement * delta
+		
+		if test_move(motion):
+			new_anim = "standing"
+		
 		move(motion)
-
+		
 	set_animation(new_anim)

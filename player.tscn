@@ -8,7 +8,7 @@
 custom_solver_bias = 0.0
 points = Vector2Array( -17.5828, -17.3811, 17.5139, -17.5064, 17.4512, 17.4649, -17.6454, 17.5903 )
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=2]
 
 resource/name = "end-front"
 length = 0.3
@@ -19,7 +19,7 @@ tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/keys = { "cont":true, "times":FloatArray( 0, 0.3 ), "transitions":FloatArray( 1, 1 ), "values":[ 0, 2 ] }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=3]
 
 resource/name = "end-lateral"
 length = 0.4
@@ -30,9 +30,8 @@ tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/keys = { "cont":true, "times":FloatArray( 0, 0.4 ), "transitions":FloatArray( 1, 1 ), "values":[ 66, 69 ] }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=4]
 
-resource/name = "shot"
 length = 0.5
 loop = false
 step = 0.1
@@ -41,9 +40,8 @@ tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/keys = { "cont":true, "times":FloatArray( 0, 0.5 ), "transitions":FloatArray( 1, 1 ), "values":[ 44, 54 ] }
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=5]
 
-resource/name = "standing"
 length = 0.8
 loop = true
 step = 0.1
@@ -130,10 +128,10 @@ trigger = false
 playback/process_mode = 1
 playback/default_blend_time = 0.0
 root/root = NodePath("..")
-anims/end-front = SubResource( 4 )
-anims/end-lateral = SubResource( 5 )
-anims/shot = SubResource( 3 )
-anims/standing = SubResource( 2 )
+anims/end-front = SubResource( 2 )
+anims/end-lateral = SubResource( 3 )
+anims/shot = SubResource( 4 )
+anims/standing = SubResource( 5 )
 anims/start-front = SubResource( 6 )
 anims/start-lateral = SubResource( 7 )
 anims/walk-front = SubResource( 8 )

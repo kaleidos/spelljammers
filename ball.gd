@@ -87,15 +87,6 @@ func _fixed_process(delta):
 
 
 func shot(shot_direction, speed):
-	var ball_poss = get_pos()
-
-	if shot_direction.x > 0:
-		ball_poss.x += 35
-	else:
-		ball_poss.x -= 35
-
-	set_pos(ball_poss)
-
 	shot2_active = false
 	ball_speed = speed
 	direction = shot_direction

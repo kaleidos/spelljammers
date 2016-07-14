@@ -27,14 +27,13 @@ func _ready():
 	set_fixed_process(true)
 
 func _fixed_process(delta):
-	#left-right 0
-	#up-down 1
-
-	var _root = get_tree().get_root()
-	var root2 = _root.get_child(_root.get_child_count()-1)
-	if root2.get_node("kk")!=null:
-		#main_loop = false
-		root2.get_node("kk").set_text(str(Input.get_joy_axis(0, 0)) + "----" + str(Input.get_joy_axis(0, 1)))
+#	#left-right 0
+#	#up-down 1
+#	var _root = get_tree().get_root()
+#	var root2 = _root.get_child(_root.get_child_count()-1)
+#	if root2.get_node("kk")!=null:
+#		#main_loop = false
+#		root2.get_node("kk").set_text(str(Input.get_joy_axis(0, 0)) + "----" + str(Input.get_joy_axis(0, 1)))
 
 	if next_round:
 		
@@ -185,12 +184,12 @@ func points(p1_points, p2_points):
 
 	show_points(player1_points_str, player2_points_str)
 
-func IA():
-	var shots_types = ["straight", "up-middle", "down-middle", "up", "down"]
+func IA():	
+	var shots_types = [Vector2(-1.5, -3), Vector2(-1.5, -1.5), Vector2(-1.5, 1.5), Vector2(-1.5, 3)	, Vector2(-1, -1)]
 	var ball = get_ball()
 	var ball_pos = ball.get_pos()
 
-	if ball_pos.x > 400 && !player2.has_the_ball():
+	if ball_pos.x > 500 && !player2.has_the_ball():
 		player2.set_pos(ball_pos)
 	elif player2.has_the_ball():
 		var time = OS.get_ticks_msec()
