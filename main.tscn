@@ -2,8 +2,8 @@
 
 [ext_resource path="res://main.gd" type="Script" id=1]
 [ext_resource path="res://ase/scenario_base_castle.png" type="Texture" id=2]
-[ext_resource path="res://ball.tscn" type="PackedScene" id=3]
-[ext_resource path="res://clock.tscn" type="PackedScene" id=4]
+[ext_resource path="res://clock.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ball.tscn" type="PackedScene" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -110,14 +110,7 @@ constant_angular_velocity = 0.0
 friction = 1.0
 bounce = 0.0
 
-[node name="ball" parent="." instance=ExtResource( 3 )]
-
-transform/pos = Vector2( 464, 214 )
-z/z = 2
-collision/layers = 6
-collision/mask = 6
-
-[node name="clock" parent="." instance=ExtResource( 4 )]
+[node name="clock" parent="." instance=ExtResource( 3 )]
 
 rect/scale = Vector2( 0.8, 0.8 )
 margin/left = 306.0
@@ -172,6 +165,13 @@ margin/bottom = 49.0
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+
+[node name="ball" parent="." instance=ExtResource( 4 )]
+
+transform/pos = Vector2( 464, 214 )
+z/z = 2
+collision/layers = 6
+collision/mask = 6
 
 [node name="net" type="Node2D" parent="."]
 

@@ -104,9 +104,12 @@ func create_get_player2():
 func show_points(player1_points_str, player2_points_str):
 	var points = load("res://points.tscn")
 	var poinstaInstance = points.instance()
+
 	root.add_child(poinstaInstance)
+	
 	poinstaInstance.set_pos(Vector2(267, 150))
 	poinstaInstance.set_points(player1_points_str, player2_points_str)
+	poinstaInstance.set_z(3)
 
 func set_players_config(new_player1_config, new_player2_config):
 	player1_config = new_player1_config
