@@ -1,10 +1,16 @@
-[gd_scene load_steps=2 format=1]
+[gd_scene load_steps=3 format=1]
 
 [ext_resource path="res://points.gd" type="Script" id=1]
+[ext_resource path="res://ase/marcador.png" type="Texture" id=2]
 
 [node name="points" type="Node2D"]
 
 script/script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+
+transform/pos = Vector2( 56.8024, 22.5056 )
+texture = ExtResource( 2 )
 
 [node name="label" type="Label" parent="."]
 
@@ -21,7 +27,5 @@ uppercase = true
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-
-[node name="Sprite" type="Sprite" parent="."]
 
 
