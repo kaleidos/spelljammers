@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=1]
+[gd_scene load_steps=11 format=1]
 
 [ext_resource path="res://main.gd" type="Script" id=1]
 [ext_resource path="res://ase/scenario_base_castle.png" type="Texture" id=2]
@@ -30,6 +30,11 @@ extents = Vector2( 10, 39.1397 )
 custom_solver_bias = 0.0
 extents = Vector2( 10, 128.803 )
 
+[sub_resource type="RectangleShape2D" id=6]
+
+custom_solver_bias = 0.0
+extents = Vector2( 267.553, 10 )
+
 [node name="stadium" type="Node2D"]
 
 transform/pos = Vector2( -0.663391, -9.28793 )
@@ -41,37 +46,14 @@ transform/pos = Vector2( 1.75192, 8.41601 )
 texture = ExtResource( 2 )
 centered = false
 
-[node name="bottom_limit" type="StaticBody2D" parent="."]
+[node name="top_limit" type="StaticBody2D" parent="."]
 
 input/pickable = false
 shapes/0/shape = SubResource( 1 )
 shapes/0/transform = Matrix32( 1.08046, 0, 0, 1, 323.563, 68.9753 )
 shapes/0/trigger = false
-collision/layers = 3
-collision/mask = 3
-constant_linear_velocity = Vector2( 0, 0 )
-constant_angular_velocity = 0.0
-friction = 1.0
-bounce = 0.0
-__meta__ = { "_editor_collapsed":true }
-
-[node name="collision" type="CollisionShape2D" parent="bottom_limit"]
-
-transform/pos = Vector2( 323.563, 68.9753 )
-transform/scale = Vector2( 1.08046, 1 )
-shape = SubResource( 1 )
-trigger = false
-_update_shape_index = 0
-
-[node name="top_limit" type="StaticBody2D" parent="."]
-
-transform/pos = Vector2( 319.766, 357.256 )
-input/pickable = false
-shapes/0/shape = SubResource( 1 )
-shapes/0/transform = Matrix32( 1, 0, 0, 1, -4.3891, -3.00006 )
-shapes/0/trigger = false
-collision/layers = 3
-collision/mask = 3
+collision/layers = 4
+collision/mask = 4
 constant_linear_velocity = Vector2( 0, 0 )
 constant_angular_velocity = 0.0
 friction = 1.0
@@ -80,12 +62,35 @@ __meta__ = { "_editor_collapsed":true }
 
 [node name="collision" type="CollisionShape2D" parent="top_limit"]
 
+transform/pos = Vector2( 323.563, 68.9753 )
+transform/scale = Vector2( 1.08046, 1 )
+shape = SubResource( 1 )
+trigger = false
+_update_shape_index = 0
+
+[node name="bottom_limit" type="StaticBody2D" parent="."]
+
+transform/pos = Vector2( 319.766, 357.256 )
+input/pickable = false
+shapes/0/shape = SubResource( 1 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, -4.3891, -3.00006 )
+shapes/0/trigger = false
+collision/layers = 5
+collision/mask = 5
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+__meta__ = { "_editor_collapsed":true }
+
+[node name="collision" type="CollisionShape2D" parent="bottom_limit"]
+
 transform/pos = Vector2( -4.3891, -3.00006 )
 shape = SubResource( 1 )
 trigger = false
 _update_shape_index = 0
 
-[node name="StaticBody2D" type="StaticBody2D" parent="top_limit"]
+[node name="StaticBody2D" type="StaticBody2D" parent="bottom_limit"]
 
 input/pickable = false
 collision/layers = 1
@@ -95,7 +100,7 @@ constant_angular_velocity = 0.0
 friction = 1.0
 bounce = 0.0
 
-[node name="StaticBody2D" type="StaticBody2D" parent="top_limit/StaticBody2D"]
+[node name="StaticBody2D" type="StaticBody2D" parent="bottom_limit/StaticBody2D"]
 
 input/pickable = false
 collision/layers = 1
@@ -109,13 +114,18 @@ bounce = 0.0
 
 transform/pos = Vector2( 464, 214 )
 z/z = 2
+collision/layers = 6
+collision/mask = 6
 
 [node name="clock" parent="." instance=ExtResource( 4 )]
 
-margin/left = 301.0
-margin/top = 29.0
-margin/right = 341.0
-margin/bottom = 42.0
+rect/scale = Vector2( 0.8, 0.8 )
+margin/left = 306.0
+margin/top = 51.0
+margin/right = 346.0
+margin/bottom = 64.0
+text = "60"
+align = 1
 
 [node name="player1_points" type="Label" parent="."]
 
@@ -123,10 +133,10 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 164.0
-margin/top = 12.0
-margin/right = 204.0
-margin/bottom = 25.0
+margin/left = 276.0
+margin/top = 49.0
+margin/right = 316.0
+margin/bottom = 62.0
 text = "00"
 align = 1
 percent_visible = 1.0
@@ -139,10 +149,10 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 428.0
-margin/top = 12.0
-margin/right = 468.0
-margin/bottom = 25.0
+margin/left = 328.0
+margin/top = 49.0
+margin/right = 368.0
+margin/bottom = 62.0
 text = "00"
 align = 1
 percent_visible = 1.0
@@ -284,6 +294,7 @@ constant_linear_velocity = Vector2( 0, 0 )
 constant_angular_velocity = 0.0
 friction = 1.0
 bounce = 0.0
+__meta__ = { "_editor_collapsed":true }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="left"]
 
@@ -306,11 +317,35 @@ constant_linear_velocity = Vector2( 0, 0 )
 constant_angular_velocity = 0.0
 friction = 1.0
 bounce = 0.0
+__meta__ = { "_editor_collapsed":true }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="right"]
 
 transform/pos = Vector2( 23.8962, -5.36444 )
 shape = SubResource( 5 )
+trigger = false
+_update_shape_index = 0
+
+[node name="top_players_limit" type="StaticBody2D" parent="."]
+
+visibility/visible = false
+transform/pos = Vector2( 279.907, 53.4958 )
+input/pickable = false
+shapes/0/shape = SubResource( 6 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 41.226, -23.669 )
+shapes/0/trigger = false
+collision/layers = 1
+collision/mask = 1
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
+__meta__ = { "_editor_collapsed":true }
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="top_players_limit"]
+
+transform/pos = Vector2( 41.226, -23.669 )
+shape = SubResource( 6 )
 trigger = false
 _update_shape_index = 0
 
