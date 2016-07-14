@@ -136,6 +136,9 @@ func points(p1_points, p2_points):
 
 	var node_name = ""
 
+	player1.stop()
+	player2.stop()
+
 	main_loop = false
 
 	player1_points += p1_points

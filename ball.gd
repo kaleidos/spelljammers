@@ -65,7 +65,6 @@ func _fixed_process(delta):
 			arrive_shot2_destination()
 
 		if is_colliding() && get_collider().has_method("is_player"):
-			print("collision")
 			activate = false
 
 			var player = get_collider()
@@ -88,7 +87,6 @@ func _fixed_process(delta):
 
 
 func shot(shot_direction, speed):
-	print("shot")
 	var ball_poss = get_pos()
 
 	if shot_direction.x > 0:

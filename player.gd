@@ -20,6 +20,8 @@ var state = "idle"
 var player_area = "left"
 var control
 var anim
+var player_orientation = "right"
+
 const SHOT_DURATION = 500 #TODO: configuratble?
 
 # shot
@@ -37,6 +39,24 @@ var player_config
 func _ready():
 	control = get_node("/root/control")
 	set_fixed_process(true)
+
+func stop():
+	set_animation("standing")
+
+func set_player_orientation(new_orientation):
+	player_orientation = new_orientation
+	if player_orientation == 'left':
+		get_node("Sprite").set_scale(Vector2(-1, 1))
+	elif player_orientation == "right":
+		get_node("Sprite").set_scale(Vector2(1, 1))
+
+func reset_player_orientation():
+	var player_area = get_player_area()
+
+	if player_area == "left":
+		set_player_orientation("right")
+	elif player_area == "right":
+		set_player_orientation("left")
 
 func has_the_ball():
 	return state == "catch_ball"
@@ -143,6 +163,7 @@ func shot(type, is_secondary):
 		ball.shot(direction.normalized(), speed)
 
 func catch():
+	reset_player_orientation()
 	set_action("catch_ball")
 
 func are_shot_available():
@@ -174,8 +195,10 @@ func get_player_area():
 func set_player_area(area):
 	player_area = area
 
-	if player_area == "right":
-		get_node("Sprite").set_scale(Vector2(-1, 1))
+	if area == "right":
+		set_player_orientation("left")
+	else:
+		set_player_orientation("right")
 
 func is_action_pressed(action):
 	return Input.is_action_pressed(get_player_event(action))
@@ -238,16 +261,36 @@ func is_automatic_shot():
 	var current_time = OS.get_ticks_msec()
 	return (current_time - last_catch_time) >= player_config.time_automatic_shot
 
+func shot_animation():
+	pass
+
+func set_animation(new_anim):
+	if (new_anim != anim):
+		if (new_anim == 'stop'):
+			get_node("anim").stop()
+		else:
+			if new_anim == "walk-front":
+				get_node("anim").play("start-front")
+				get_node("anim").queue(new_anim)
+			elif new_anim == "walk-lateral":
+				get_node("anim").play("start-lateral")
+				get_node("anim").queue(new_anim)
+			else:
+				get_node("anim").play(new_anim)
+
+		anim = new_anim
+
 func _fixed_process(delta):
 	var new_anim = "standing"
+	var new_reverse_siding = true
 
 	if !control.main_loop:
 		return
 
 	var current_time = OS.get_ticks_msec()
 
-	if last_shot_time > 0 && last_shot_time - current_time <= SHOT_DURATION:
-		new_anim = "shot"
+#   if last_shot_time > 0 && last_shot_time - current_time <= SHOT_DURATION:
+#		new_anim = "shot"
 
 	if !is_action_key_pressed() && state == 'idle':
 		block_action_dash = false
@@ -270,7 +313,10 @@ func _fixed_process(delta):
 		else:
 			shot("straight", is_secondary)
 
-		new_anim = "shot"
+		#new_anim = "shot"
+
+	if new_anim == "shot":
+		shot_animation()
 
 	# movement
 	movement.x = 0
@@ -284,6 +330,8 @@ func _fixed_process(delta):
 		set_action("idle")
 
 	if are_move_actions_available():
+		var player_area = get_player_area()
+
 		if is_action_pressed("main") && is_axis_pressed() && !block_action_dash:
 			last_dash_init_time = current_time
 			dash_orientation = get_player_orientation()
@@ -292,12 +340,21 @@ func _fixed_process(delta):
 		else:
 			if is_action_pressed("right"):
 				movement.x = player_config.player_speed
+				new_anim = "walk-lateral"
+
+				set_player_orientation("right")
+
 			if is_action_pressed("left"):
 				movement.x = -player_config.player_speed
+				new_anim = "walk-lateral"
+
+				set_player_orientation("left")
 			if is_action_pressed("up"):
 				movement.y = -player_config.player_speed
+				new_anim = "walk-front"
 			if is_action_pressed("down"):
 				movement.y = player_config.player_speed
+				new_anim = "walk-front"
 	#dash
 	elif state == "dash":
 			if dash_orientation == "up-left":
@@ -325,11 +382,4 @@ func _fixed_process(delta):
 		var motion = movement * delta
 		move(motion)
 
-	# Animation
-	if (new_anim != anim):
-		if (new_anim == 'stop'):
-			get_node("anim").stop()
-		else:
-			get_node("anim").play(new_anim)
-
-		anim = new_anim
+	set_animation(new_anim)
