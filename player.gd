@@ -77,40 +77,6 @@ func set_action(action_name):
 		block_action_dash = true
 
 	state = action_name
-#
-#func search_speed(list_speeds, type, time):
-#	for shot_config in list_speeds:
-#		if "angles" in shot_config && type in shot_config.angles:
-#			if "max" in shot_config && shot_config["min"] <= time && shot_config["max"] >= time:
-#				return shot_config.speed
-#			elif not "max" in shot_config && shot_config["min"] <= time:
-#				return shot_config.speed
-#		elif not "angles" in shot_config:
-#			if "max" in shot_config && shot_config["min"] <= time && shot_config["max"] >= time:
-#				return shot_config.speed
-#			elif not "max" in shot_config && shot_config["min"] <= time:
-#				return shot_config.speed
-#
-#func get_speed(player_axis, time):
-#	if type == "straight":
-#		return search_speed(player_config.shots_strength.normal_shots, type, time)
-#	elif "normal_angle_shots" in player_config.shots_strength:
-#		return search_speed(player_config.shots_strength.normal_angle_shots, type, time)
-#	else:
-#		return search_speed(player_config.shots_strength.normal_shots, type, time)
-
-#	"shots_strength": {
-#		"normal_shots": [
-#			{"min_angle": 0.9, "max_angle": 1, "speeds": [
-#				{"min": 0, "max": 100, "speed": 700},
-#				{"min": 100, "max": 300, "speed": 600},
-#				{"min": 300, "speed": 500}
-#			]},
-#			{"min_angle": 0.2, "max_angle": 0.9, "speeds": [
-#				{"min": 0, "speed": 500}
-#			]}
-#		]
-#	}
 
 func search_speed_by_time(list_speeds, time):
 	for shot_config in list_speeds:
@@ -119,9 +85,12 @@ func search_speed_by_time(list_speeds, time):
 		elif not "max" in shot_config && shot_config["min"] <= time:
 			return shot_config.speed
 
-func get_speed(player_axis, time):
+func get_speed(player_axis, time,is_secondary):
 	if player_axis.x < 0:
 		player_axis.x = -player_axis.x
+		
+	if is_secondary:
+		return search_speed_by_time(player_config.shots_strength.secondary, time)
 	
 	if !is_axis_pressed():
 		return search_speed_by_time(player_config.shots_strength.straight, time)
@@ -144,55 +113,56 @@ func shot(player_axis, is_secondary):
 	elif player_area  == "right":
 		if player_axis.x > -player_config.min_shot_angle:
 			player_axis.x = -player_config.min_shot_angle
-		
 	
-	var speed = get_speed(player_axis, diff)
-	print(speed)
+	var speed = get_speed(player_axis, diff, is_secondary)
 
 	# a/b = c/x  -> (b/a = c/x) // ((a*c)/b)
 	if is_secondary:
-		pass
-#		#TODO
-#		var player_area = get_player_area()
-#		var player_area_width = 282
-#		var x
-#		var y
-#
-#		if diff != 0:
-#			if player_area == "left":
-#				x = 340 + ((100 * player_area_width) / diff)
-#				if x > 540:
-#					x = 540
-#
-#			else:
-#				x = diff * 100 / player_area_width
-#				if x < 70:
-#					x = 70
-#				elif x > 256:
-#					x = 265
-#		elif player_area == "right":
-#			x = 70
-#		else:
-#			x = 340
-#
-#		if type == "left-up" || type == "right-up":
-#			y = 130
-#		elif type == "left-down" || type == "right-down":
-#			y = 290
-#		elif type == "up":
-#			y = 100
-#		elif type == "down":
-#			y = 330
-#		else:
-#			y = 210
-#
-#		#x = 540
-#		#y = 210
-#
-#		var destination = Vector2(x, y)
-#
-#		set_action("idle")
-#		ball.shot2(destination, speed)
+		var player_area = get_player_area()
+		var player_area_width = 328
+		var player_area_height = 334
+		var min_area2 = 340
+		var max_area2 = 540
+		var min_area1 = 70
+		var max_area1 = 256
+		var x
+		var y 
+
+		if diff != 0:
+			if player_area == "left":
+				x = min_area2 + ((100 * player_area_width) / diff)
+				if x > max_area2:
+					x = max_area2
+
+			else:
+				x = diff * 100 / player_area_width
+				if x < min_area1:
+					x = min_area1
+				elif x > max_area1:
+					x = max_area1
+					
+		elif player_area == "right":
+			x = min_area1
+		else:
+			x = min_area2
+			
+		if is_axis_pressed():
+			var percent = ((player_area_height / 2) * (player_axis.y * 100)) / 100
+			print(percent)
+			y =  get_pos().y + percent
+		else:
+			y = get_pos().y
+		
+					
+		if y > player_area_height:
+			y = 320
+		elif y < 70:
+			y = 90
+
+		var destination = Vector2(x, y)
+
+		set_action("idle")
+		ball.shot2(destination, speed)
 	else:
 		set_action("idle")
 		ball.shot(player_axis.normalized(), speed)
@@ -389,29 +359,7 @@ func _fixed_process(delta):
 				
 	#dash
 	elif state == "dash":
-		print("daaaaash")
 		movement = dash_orientation * player_config.dash_speed
-		
-#			if dash_orientation == "up-left":
-#				movement.y = -player_config.dash_speed
-#				movement.x = -player_config.dash_speed
-#			elif dash_orientation == "up-right":
-#				movement.y = -player_config.dash_speed
-#				movement.x = player_config.dash_speed
-#			elif dash_orientation == "up":
-#				movement.y = -player_config.dash_speed
-#			if dash_orientation == "down-left":
-#				movement.y = player_config.dash_speed
-#				movement.x = -player_config.dash_speed
-#			elif dash_orientation == "down-right":
-#				movement.y = player_config.dash_speed
-#				movement.x = player_config.dash_speed
-#			elif dash_orientation == "down":
-#				movement.y = player_config.dash_speed
-#			elif dash_orientation == "left":
-#				movement.x = -player_config.dash_speed
-#			elif dash_orientation == "right":
-#				movement.x = player_config.dash_speed
 
 	if initialX != movement.x || initialY != movement.y:
 		var motion = movement * delta

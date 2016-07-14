@@ -8,7 +8,7 @@
 custom_solver_bias = 0.0
 radius = 9.61196
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 
 resource/name = "spin"
 length = 0.6
@@ -49,7 +49,7 @@ _update_shape_index = 0
 playback/process_mode = 1
 playback/default_blend_time = 0.0
 root/root = NodePath("..")
-anims/spin = SubResource( 3 )
+anims/spin = SubResource( 2 )
 playback/active = true
 playback/speed = 1.0
 blend_times = [  ]

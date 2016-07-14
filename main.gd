@@ -14,6 +14,11 @@ const player1_config = {
 			{"min": 100, "max": 300, "speed": 600},
 			{"min": 300, "speed": 500}		
 		],
+		"secondary": [
+			{"min": 0, "max": 100, "speed": 700},
+			{"min": 100, "max": 300, "speed": 600},
+			{"min": 300, "speed": 500}		
+		],		
 		"normal_shots": [
 			{"min_angle": 0.9, "max_angle": 1, "speeds": [
 				{"min": 0, "max": 100, "speed": 700},
