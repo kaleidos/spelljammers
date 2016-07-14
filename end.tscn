@@ -62,7 +62,57 @@ script/script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 
-transform/pos = Vector2( 327.116, 136.727 )
+transform/pos = Vector2( 321.97, 108.793 )
 texture = ExtResource( 3 )
+
+[node name="winner" type="Label" parent="."]
+
+rect/scale = Vector2( 3, 3 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 135.0
+margin/top = 194.0
+margin/right = 262.0
+margin/bottom = 214.0
+custom_colors/font_color = Color( 0.992188, 1, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = -1
+custom_constants/shadow_offset_y = -1
+custom_constants/shadow_as_outline = 1
+text = "winner player 1"
+align = 1
+valign = 1
+uppercase = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Label 2" type="Label" parent="."]
+
+visibility/visible = false
+rect/scale = Vector2( 5, 5 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 112.0
+margin/top = 81.0
+margin/right = 195.0
+margin/bottom = 101.0
+custom_colors/font_color = Color( 0.304688, 0.625183, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 0
+custom_constants/shadow_offset_y = 0
+custom_constants/shadow_as_outline = 0
+text = "GAME OVER"
+align = 1
+valign = 1
+autowrap = true
+uppercase = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
 
 

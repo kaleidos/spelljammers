@@ -17,6 +17,7 @@ var player1_config
 var player2_config
 var player1_points = 0
 var player2_points = 0
+var limit_points = 10
 
 #TODO check real pos
 const PLAYER1_POS = Vector2(150, 200)
@@ -36,8 +37,9 @@ func _fixed_process(delta):
 		root2.get_node("kk").set_text(str(Input.get_joy_axis(0, 0)) + "----" + str(Input.get_joy_axis(0, 1)))
 
 	if next_round:
+		
 		time_left_next_round -= delta
-
+		print("time_left_next_round")
 		if time_left_next_round <= 0:
 			next_round = false
 
@@ -61,11 +63,14 @@ func set_scene(scene):
 	get_tree().get_root().add_child(newroot)
 
 func init_scene():
+	print("init")
 	var _root = get_tree().get_root()
 	root = _root.get_child(_root.get_child_count()-1)
 
 	player1 = null
 	player2 = null
+	player1_points = 0
+	player2_points = 0
 
 func get_ball():
 	return root.get_node("ball")
