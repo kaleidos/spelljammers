@@ -66,8 +66,8 @@ func search_speed(list_speeds, type, time):
 func get_speed(type, time):
 	if type == "straight":
 		return search_speed(player_config.shots_strength.normal_shots, type, time)
-	elif "angle_shots" in player_config.shots_strength:
-		return search_speed(player_config.shots_strength.angle_shots, type, time)
+	elif "normal_angle_shots" in player_config.shots_strength:
+		return search_speed(player_config.shots_strength.normal_angle_shots, type, time)
 	else:
 		return search_speed(player_config.shots_strength.normal_shots, type, time)
 
@@ -119,7 +119,7 @@ func shot(type, is_secondary):
 		var destination = Vector2(x, y)
 
 		set_action("idle")
-		ball.shot2(destination, 300)
+		ball.shot2(destination, speed)
 	else:
 		var direction = Vector2(1, 0)
 

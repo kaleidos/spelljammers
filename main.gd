@@ -19,7 +19,7 @@ const player1_config = {
 			{"min": 100, "max": 300, "speed": 500},
 			{"min": 300, "speed": 200}
 		],
-		"angle_shots": [
+		"normal_angle_shots": [
 			{"min": 0, "speed": 700, "angles": ["up", "down"]},
 			{"min": 0, "speed": 600, "angles": ["up-middle", "down-middle"]}
 		]
@@ -44,7 +44,7 @@ const player2_config = {
 			{"min": 100, "max": 300, "speed": 500},
 			{"min": 300, "speed": 200}
 		],
-		"angle_shots": [
+		"normal_angle_shots": [
 			{"min": 0, "speed": 700, "angles": ["up", "down"]},
 			{"min": 0, "speed": 600, "angles": ["up-middle", "down-middle"]}
 		]
