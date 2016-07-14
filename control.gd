@@ -51,6 +51,9 @@ func _fixed_process(delta):
 
 	if ia_active:
 		IA()
+		
+func get_root():
+	return root
 
 func enable_ia():
 	ia_active = true

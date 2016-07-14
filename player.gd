@@ -148,7 +148,6 @@ func shot(player_axis, is_secondary):
 			
 		if is_axis_pressed():
 			var percent = ((player_area_height / 2) * (player_axis.y * 100)) / 100
-			print(percent)
 			y =  get_pos().y + percent
 		else:
 			y = get_pos().y
@@ -165,7 +164,13 @@ func shot(player_axis, is_secondary):
 		ball.shot2(destination, speed)
 	else:
 		set_action("idle")
-		ball.shot(player_axis.normalized(), speed)
+		if !is_axis_pressed():
+			if player_area == "left":
+				ball.shot(Vector2(1, 0), speed)
+			else:
+				ball.shot(Vector2(-1, 0), speed)
+		else:
+			ball.shot(player_axis.normalized(), speed)
 		
 
 func catch():

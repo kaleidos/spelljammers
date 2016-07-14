@@ -31,11 +31,19 @@ func deactivate():
 
 func hide():
 	set_hidden(true)
+	
+func destroy_target():
+	var target = get_node("/root/control").get_root().get_node("target")
+	if target:	
+		target.free()
 
 func reset():
+	shot2_active = false
 	activate = false
 	show()
 	get_node("sprite").set_scale(Vector2(1, 1))
+	
+	destroy_target()
 
 func arrive_shot2_destination():
 	var ball_pos = get_pos()
@@ -45,7 +53,7 @@ func arrive_shot2_destination():
 			set_layer_mask_bit(1, true)
 			set_collision_mask_bit(1, true)
 
-		if get_node("sprite").get_scale().x == 0.8:
+		if get_node("sprite").get_scale().x == 0.7:
 			deactivate()
 			if get_pos().x > 330:
 				get_node("/root/control").points(2, 0)
@@ -58,6 +66,17 @@ func _fixed_process(delta):
 	if activate:
 		new_anim = "spin"
 		movement = direction * ball_speed * delta
+#		
+#		if shot2_active:
+#			var ball_pos = get_pos()
+#			ball_pos.x += movement.x
+#			ball_pos.y += movement.y
+#			
+#			if collide(ball_pos, shot2_destination):
+#				move(movement)
+#			else:
+#				move(movement)
+#		else:
 		move(movement)
 
 		if shot2_active:
@@ -65,6 +84,10 @@ func _fixed_process(delta):
 			arrive_shot2_destination()
 
 		if is_colliding() && get_collider().has_method("is_player"):
+			get_node("sprite").set_scale(Vector2(1, 1))
+			if shot2_active:
+				destroy_target()
+			
 			activate = false
 
 			var player = get_collider()
@@ -96,6 +119,12 @@ func shot2(destination, speed):
 	ball_speed = speed
 	shot2_destination = destination
 	shot2_active = true
+	
+	var target_resource = load("res://target.tscn")
+	var target = target_resource.instance()
+	get_node("/root/control").get_root().add_child(target)
+	target.set_pos(shot2_destination)
+	#target.set_pos(Vector2(shot2_destination.x + 4, shot2_destination.y - 2))
 
 	direction = (shot2_destination - get_pos()).normalized()
 
@@ -116,8 +145,8 @@ func shot2(destination, speed):
 	shot2Animation.track_set_path(0, "/root/stadium/ball/sprite:transform/scale")
 	shot2Animation.value_track_set_continuous(0, true)
 	shot2Animation.track_insert_key(0, 0.0, Vector2(1, 1))
-	shot2Animation.track_insert_key(0, animation_time / 2, Vector2(4, 4))
-	shot2Animation.track_insert_key(0, animation_time, Vector2(0.8, 0.8))
+	shot2Animation.track_insert_key(0, animation_time / 2, Vector2(5, 5))
+	shot2Animation.track_insert_key(0, animation_time, Vector2(0.7, 0.7))
 
 	set_layer_mask_bit(1, false)
 	set_collision_mask_bit(1, false)
