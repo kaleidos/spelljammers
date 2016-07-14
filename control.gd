@@ -28,18 +28,12 @@ func _ready():
 func _fixed_process(delta):
 	#left-right 0
 	#up-down 1
-#
-#	var _root = get_tree().get_root()
-#	var root2 = _root.get_child(_root.get_child_count()-1)
-#	if root2.get_node("kk")!=null:
-#		main_loop = false
-#		root2.get_node("kk").set_text(str(Input.get_joy_axis(0, 0)) + "----" + str(Input.get_joy_axis(0, 1)))
-#	if Input.get_joy_axis(0, 0) > maxkk:
-#		maxkk = Input.get_joy_axis(0, 0)
-#
-#	if Input.get_joy_axis(0, 0) < minkk:
-#		minkk = Input.get_joy_axis(0, 0)
-#   print(Input.get_joy_axis(0, 1))
+
+	var _root = get_tree().get_root()
+	var root2 = _root.get_child(_root.get_child_count()-1)
+	if root2.get_node("kk")!=null:
+		#main_loop = false
+		root2.get_node("kk").set_text(str(Input.get_joy_axis(0, 0)) + "----" + str(Input.get_joy_axis(0, 1)))
 
 	if next_round:
 		time_left_next_round -= delta

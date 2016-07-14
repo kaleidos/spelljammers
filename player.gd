@@ -378,6 +378,24 @@ func _fixed_process(delta):
 			elif dash_orientation == "right":
 				movement.x = player_config.dash_speed
 
+#	if get_player_area() == 'left':
+#		#var absJoyPos : Vector2 = Vector2( Mathf.Abs( moveJoystick.position.x ), Mathf.Abs( moveJoystick.position.y ) );
+#		if Input.get_joy_axis(0, 0) > 0.3:
+#			movement.x = abs(Input.get_joy_axis(0, 0)) * player_config.player_speed
+#		elif Input.get_joy_axis(0, 0) < -0.3:
+#			movement.x = -abs(Input.get_joy_axis(0, 0)) * player_config.player_speed
+#
+#		if Input.get_joy_axis(0, 1) > 0.3:
+#			movement.y = abs(Input.get_joy_axis(0, 1)) * player_config.player_speed
+#		elif  Input.get_joy_axis(0, 1) < -0.3:
+#			movement.y = -abs(Input.get_joy_axis(0, 1)) * player_config.player_speed
+#		#movement.x = Input.get_joy_axis(0, 0)
+#		#movement.y = abs(Input.get_joy_axis(0, 1)) * player_config.player_speed
+#		#movement.y = Input.get_joy_axis(0, 1)
+#
+#		print(movement.x)
+#		#print(movement.y)
+
 	if initialX != movement.x || initialY != movement.y:
 		var motion = movement * delta
 		move(motion)
