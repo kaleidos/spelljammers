@@ -174,29 +174,6 @@ z/z = 2
 collision/layers = 6
 collision/mask = 6
 
-[node name="SpotLight" type="SpotLight" parent="ball"]
-
-_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-layers = 1
-params/enabled = true
-params/editor_only = false
-params/bake_mode = 0
-params/energy = 1.0
-colors/diffuse = Color( 0.0372009, 0.0607548, 0.414062, 1 )
-colors/specular = Color( 0.964844, 0.0603027, 0.0603027, 1 )
-shadow/shadow = false
-shadow/darkening = 0.0
-shadow/z_offset = 0.05
-shadow/z_slope_scale = 0.0
-shadow/esm_multiplier = 60.0
-shadow/blur_passes = 1.0
-projector = null
-operator = 0
-params/radius = 2.0
-params/attenuation = 1.0
-params/spot_angle = 68.9062
-params/spot_attenuation = 1.0
-
 [node name="net" type="Node2D" parent="."]
 
 transform/pos = Vector2( 329.907, 207.165 )
