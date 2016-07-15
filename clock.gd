@@ -15,21 +15,16 @@ func _fixed_process(delta):
 	var limit_points = control.limit_points
 
 	if player1_points >= limit_points:
-		print("limit player1")
-		#get_node("/root/control").set_scene("res://end.tscn")
+		control.end()
 	elif player2_points >= limit_points:
-		print("limit player2")
-		#get_node("/root/control").set_scene("res://end.tscn")
+		control.end()
+	else:
+		var time = OS.get_ticks_msec()
+		var newseconds = (time - start) / 1000
 
-	var time = OS.get_ticks_msec()
-	var newseconds = (time - start) / 1000
-
-	if newseconds >= limit:
-		print("timer")
-		get_node("/root/control").set_scene("res://end.tscn")
-	elif seconds != newseconds:
-		seconds = newseconds
-		set_text(str(limit - seconds))
-
-
+		if newseconds >= limit:
+			control.end()
+		elif seconds != newseconds:
+			seconds = newseconds
+			set_text(str(limit - seconds))
 

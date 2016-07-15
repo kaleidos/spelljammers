@@ -37,6 +37,7 @@ func _ready():
 	var control = get_node("/root/control")
 	control.init_scene()
 
+	control.main_loop = true
 	control.set_players_config(player1_config, player1_config)
 	control.reset_players_positions()
 	control.player1_start()

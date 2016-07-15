@@ -17,11 +17,11 @@ var player1_config
 var player2_config
 var player1_points = 0
 var player2_points = 0
-var limit_points = 10
+var limit_points = 12
 
 #TODO check real pos
-const PLAYER1_POS = Vector2(150, 200)
-const PLAYER2_POS = Vector2(500, 200)
+const PLAYER1_POS = Vector2(100, 200)
+const PLAYER2_POS = Vector2(545, 200)
 
 func _ready():
 	set_fixed_process(true)
@@ -36,9 +36,7 @@ func _fixed_process(delta):
 #		root2.get_node("kk").set_text(str(Input.get_joy_axis(0, 0)) + "----" + str(Input.get_joy_axis(0, 1)))
 
 	if next_round:
-
 		time_left_next_round -= delta
-		print("time_left_next_round")
 		if time_left_next_round <= 0:
 			next_round = false
 
@@ -52,6 +50,10 @@ func _fixed_process(delta):
 	if ia_active:
 		IA()
 
+func end():
+	next_round = false
+	set_scene("res://end.tscn")
+
 func get_root():
 	return root
 
@@ -64,10 +66,12 @@ func set_scene(scene):
 	var newroot = s.instance()
 	get_tree().get_root().add_child(newroot)
 
-func init_scene():
-	print("init")
+func refresh_root():
 	var _root = get_tree().get_root()
 	root = _root.get_child(_root.get_child_count()-1)
+
+func init_scene():
+	refresh_root()
 
 	player1 = null
 	player2 = null
@@ -123,7 +127,9 @@ func reset_players_positions():
 	var player2 = create_get_player2()
 
 	player1.set_pos(PLAYER1_POS)
+	player1.reset_player_orientation()
 	player2.set_pos(PLAYER2_POS)
+	player2.reset_player_orientation()
 
 func player1_start():
 	var ball = get_ball()
@@ -176,7 +182,7 @@ func points(p1_points, p2_points):
 	root.get_node("player2_points").set_text(player2_points_str)
 
 	next_round = true
-	time_left_next_round = 1
+	time_left_next_round = 2
 
 	if p1_points > 0:
 		next_player_to_start = "player2"
@@ -189,6 +195,9 @@ func points(p1_points, p2_points):
 		ball.hide()
 
 	show_points(player1_points_str, player2_points_str)
+
+func get_players_poinsts():
+	return {"player1": player1_points, "player2": player2_points}
 
 func IA():
 	var shots_types = [Vector2(-1.5, -3), Vector2(-1.5, -1.5), Vector2(-1.5, 1.5), Vector2(-1.5, 3)	, Vector2(-1, -1)]
