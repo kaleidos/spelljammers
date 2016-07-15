@@ -15,9 +15,9 @@ const player1_config = {
 			{"min": 300, "speed": 500}
 		],
 		"secondary": [
-			{"min": 0, "max": 100, "speed": 400},
-			{"min": 100, "max": 300, "speed": 300},
-			{"min": 300, "speed": 200}
+			{"min": 0, "max": 100, "speed": 270},
+			{"min": 100, "max": 300, "speed": 230},
+			{"min": 300, "speed": 180}
 		],
 		"normal_shots": [
 			{"min_angle": 0.9, "max_angle": 1, "speeds": [
@@ -33,7 +33,7 @@ const player1_config = {
 }
 
 func _ready():
-	#OS.set_window_fullscreen(true)
+	OS.set_window_fullscreen(true)
 	var control = get_node("/root/control")
 	control.init_scene()
 
@@ -42,7 +42,7 @@ func _ready():
 	control.reset_players_positions()
 	control.player1_start()
 
-	#control.enable_ia()
+	control.enable_ia()
 
 func _on_3points( body ):
 	if !body.has_method("is_ball"):
