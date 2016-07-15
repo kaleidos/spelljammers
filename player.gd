@@ -286,7 +286,7 @@ func shot_animation():
 func set_animation(new_anim):
 	if (new_anim != anim):
 		if (new_anim == 'stop'):
-			get_node("anim").stop()
+			stop()
 		else:
 			if new_anim == "walk-front":
 				get_node("anim").play("start-front")
@@ -300,8 +300,13 @@ func set_animation(new_anim):
 			else:
 				if new_anim == "standing" && anim == "walk-front":
 					get_node("anim").play("end-front")
+					get_node("anim").queue("standing")
 				elif new_anim == "standing" && anim == "walk-lateral":
 					get_node("anim").play("end-lateral")
+					get_node("anim").queue("standing")
+				elif new_anim == "standing" && anim == "walk-back":
+					get_node("anim").play("end-back")
+					get_node("anim").queue("standing")
 				else:
 					get_node("anim").play(new_anim)
 

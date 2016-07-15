@@ -110,6 +110,8 @@ func create_get_player2():
 		var player = load("res://player.tscn")
 		player2 = player.instance()
 		root.add_child(player2)
+		var texture = preload("res://ase/player2.png")
+		player2.get_node("Sprite").set_texture(texture)
 
 		player2.set_player_area("right");
 
