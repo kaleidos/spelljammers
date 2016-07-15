@@ -4,7 +4,7 @@ extends Node2D
 const player1_config = {
 	"player_speed": 160,
 	"dash_duration": 190,
-	"dash_speed": 350,
+	"dash_speed": 450,
 	"time_movement_block_after_shot": 200,
 	"time_automatic_shot": 2000,
 	"min_shot_angle": 0.2,
