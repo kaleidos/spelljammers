@@ -351,22 +351,22 @@ _update_shape_index = 0
 [node name="Sprite" parent="." instance=ExtResource( 5 )]
 
 transform/pos = Vector2( 119.959, 58.3906 )
-transform/scale = Vector2( 1, 1 )
+z/z = 0
 
 [node name="Sprite1" parent="." instance=ExtResource( 5 )]
 
 transform/pos = Vector2( 181.527, 59.185 )
-transform/scale = Vector2( 1, 1 )
+z/z = 0
 
 [node name="Sprite2" parent="." instance=ExtResource( 5 )]
 
 transform/pos = Vector2( 460.769, 58.7878 )
-transform/scale = Vector2( 1, 1 )
+z/z = 0
 
 [node name="Sprite3" parent="." instance=ExtResource( 5 )]
 
 transform/pos = Vector2( 524.721, 59.5822 )
-transform/scale = Vector2( 1, 1 )
+z/z = 0
 
 [connection signal="body_enter" from="3points" to="." method="_on_3points"]
 
