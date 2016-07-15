@@ -26,5 +26,12 @@ func _fixed_process(delta):
 			control.end()
 		elif seconds != newseconds:
 			seconds = newseconds
-			set_text(str(limit - seconds))
+
+			var time_remaing = limit - seconds
+
+			print(time_remaing)
+			if time_remaing == 10:
+				set("custom_colors/font_color", "#d71b1b")
+
+			set_text(str(time_remaing))
 
