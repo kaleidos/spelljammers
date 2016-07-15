@@ -10,7 +10,7 @@ func _ready():
 func _fixed_process(delta):
 	var control = get_node("/root/control")
 	var root = control.get_root()
-	
+
 	var players_poinsts = control.get_players_poinsts()
 	var player1_points = players_poinsts.player1
 	var player2_points = players_poinsts.player2

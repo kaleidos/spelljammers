@@ -294,8 +294,16 @@ func set_animation(new_anim):
 			elif new_anim == "walk-lateral":
 				get_node("anim").play("start-lateral")
 				get_node("anim").queue(new_anim)
+			elif new_anim == "walk-back":
+				get_node("anim").play("start-walk-back")
+				get_node("anim").queue(new_anim)
 			else:
-				get_node("anim").play(new_anim)
+				if new_anim == "standing" && anim == "walk-front":
+					get_node("anim").play("end-front")
+				elif new_anim == "standing" && anim == "walk-lateral":
+					get_node("anim").play("end-lateral")
+				else:
+					get_node("anim").play(new_anim)
 
 		anim = new_anim
 
