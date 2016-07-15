@@ -48,7 +48,7 @@ func _on_3points( body ):
 		return
 	control = get_node("/root/control")
 
-	if get_pos().x > 300:
+	if body.get_pos().x > 300:
 		control.points(3, 0)
 	else:
 		control.points(0, 3)
@@ -60,7 +60,7 @@ func _on_5points( body ):
 
 	control = get_node("/root/control")
 
-	if get_pos().x > 300:
+	if body.get_pos().x > 300:
 		control.points(5, 0)
 	else:
 		control.points(0, 5)

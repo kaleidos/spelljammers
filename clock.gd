@@ -9,9 +9,10 @@ func _ready():
 	set_fixed_process(true)
 
 func _fixed_process(delta):
-	var player1_points = get_node("/root/control").player1_points
-	var player2_points = get_node("/root/control").player2_points
-	var limit_points = get_node("/root/control").limit_points
+	var control = get_node("/root/control")
+	var player1_points = control.player1_points
+	var player2_points = control.player2_points
+	var limit_points = control.limit_points
 
 	if player1_points >= limit_points:
 		print("limit player1")
