@@ -92,6 +92,7 @@ func _fixed_process(delta):
 			get_node("sprite").set_scale(Vector2(1, 1))
 			if shot2_active:
 				destroy_target()
+				shot2_active = false
 
 			activate = false
 
@@ -105,9 +106,14 @@ func _fixed_process(delta):
 			direction = n.reflect(direction)
 
 	# Animation
-	if (new_anim != anim):
-		if (new_anim == 'stop'):
-			get_node("anim").stop()
+	if new_anim != anim:
+		if anim == "shot2":
+			get_node("anim").stop(true)
+			get_node("anim").remove_animation("shot")
+			get_node("sprite").set_scale(Vector2(1, 1))
+
+		if (new_anim == "stop"):
+			get_node("anim").stop(true)
 		else:
 			get_node("anim").play(new_anim)
 
@@ -150,8 +156,6 @@ func shot2(destination, speed):
 
 	shot2Animation.track_set_path(0, "/root/stadium/ball/sprite:transform/scale")
 	shot2Animation.track_set_path(1, "/root/stadium/ball/sprite:frame")
-	shot2Animation.value_track_set_continuous(0, true)
-	shot2Animation.value_track_set_continuous(1, true)
 
 	shot2Animation.track_insert_key(0, 0.0, Vector2(1, 1))
 	shot2Animation.track_insert_key(0, animation_time / 2, Vector2(5, 5))
