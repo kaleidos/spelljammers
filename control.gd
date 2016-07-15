@@ -36,7 +36,7 @@ func _fixed_process(delta):
 #		root2.get_node("kk").set_text(str(Input.get_joy_axis(0, 0)) + "----" + str(Input.get_joy_axis(0, 1)))
 
 	if next_round:
-		
+
 		time_left_next_round -= delta
 		print("time_left_next_round")
 		if time_left_next_round <= 0:
@@ -51,7 +51,7 @@ func _fixed_process(delta):
 
 	if ia_active:
 		IA()
-		
+
 func get_root():
 	return root
 
@@ -109,7 +109,7 @@ func show_points(player1_points_str, player2_points_str):
 	var poinstaInstance = points.instance()
 
 	root.add_child(poinstaInstance)
-	
+
 	poinstaInstance.set_pos(Vector2(267, 150))
 	poinstaInstance.set_points(player1_points_str, player2_points_str)
 	poinstaInstance.set_z(3)
@@ -190,7 +190,7 @@ func points(p1_points, p2_points):
 
 	show_points(player1_points_str, player2_points_str)
 
-func IA():	
+func IA():
 	var shots_types = [Vector2(-1.5, -3), Vector2(-1.5, -1.5), Vector2(-1.5, 1.5), Vector2(-1.5, 3)	, Vector2(-1, -1)]
 	var ball = get_ball()
 	var ball_pos = ball.get_pos()

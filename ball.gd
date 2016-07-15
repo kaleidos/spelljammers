@@ -31,10 +31,10 @@ func deactivate():
 
 func hide():
 	set_hidden(true)
-	
+
 func destroy_target():
 	var target = get_node("/root/control").get_root().get_node("target")
-	if target:	
+	if target:
 		target.free()
 
 func reset():
@@ -42,7 +42,7 @@ func reset():
 	activate = false
 	show()
 	get_node("sprite").set_scale(Vector2(1, 1))
-	
+
 	destroy_target()
 
 func arrive_shot2_destination():
@@ -66,12 +66,12 @@ func _fixed_process(delta):
 	if activate:
 		new_anim = "spin"
 		movement = direction * ball_speed * delta
-#		
+#
 #		if shot2_active:
 #			var ball_pos = get_pos()
 #			ball_pos.x += movement.x
 #			ball_pos.y += movement.y
-#			
+#
 #			if collide(ball_pos, shot2_destination):
 #				move(movement)
 #			else:
@@ -87,7 +87,7 @@ func _fixed_process(delta):
 			get_node("sprite").set_scale(Vector2(1, 1))
 			if shot2_active:
 				destroy_target()
-			
+
 			activate = false
 
 			var player = get_collider()
@@ -119,7 +119,7 @@ func shot2(destination, speed):
 	ball_speed = speed
 	shot2_destination = destination
 	shot2_active = true
-	
+
 	var target_resource = load("res://target.tscn")
 	var target = target_resource.instance()
 	get_node("/root/control").get_root().add_child(target)
