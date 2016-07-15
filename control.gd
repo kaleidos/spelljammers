@@ -50,6 +50,15 @@ func _fixed_process(delta):
 	if ia_active:
 		IA()
 
+func is_game_in_progress():
+	if player1.has_the_ball() || player2.has_the_ball():
+		return false
+
+	if next_round:
+		return false
+
+	return true
+
 func end():
 	next_round = false
 	set_scene("res://end.tscn")

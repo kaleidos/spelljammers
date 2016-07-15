@@ -22,7 +22,7 @@ func _fixed_process(delta):
 		var time = OS.get_ticks_msec()
 		var newseconds = (time - start) / 1000
 
-		if newseconds >= limit:
+		if newseconds >= limit && !control.is_game_in_progress():
 			control.end()
 		elif seconds != newseconds:
 			seconds = newseconds
