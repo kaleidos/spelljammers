@@ -5,6 +5,7 @@ var direction = Vector2(-1, 0)
 var activate = true
 var ball_speed
 var anim = ""
+var shot2_arrive = false
 var shot2_active = false
 var shot2_destination
 var shot2_end
@@ -16,8 +17,9 @@ func collide(f1, f2):
 	if (f1.x < f2.x + width &&
 	   f1.x + width > f2.x &&
 	   f1.y < f2.y + height &&
-	   f1.height + f1.y > f2.y):
-		return true
+	   height + f1.y > f2.y):
+   		return true
+
 	return false
 
 func _ready():
@@ -38,6 +40,7 @@ func destroy_target():
 		target.free()
 
 func reset():
+	shot2_arrive = false
 	shot2_active = false
 	activate = false
 	show()
@@ -66,18 +69,20 @@ func _fixed_process(delta):
 	if activate:
 		new_anim = "spin"
 		movement = direction * ball_speed * delta
-#
-#		if shot2_active:
-#			var ball_pos = get_pos()
-#			ball_pos.x += movement.x
-#			ball_pos.y += movement.y
-#
-#			if collide(ball_pos, shot2_destination):
-#				move(movement)
-#			else:
-#				move(movement)
-#		else:
-		move(movement)
+
+		if shot2_active:
+			if !shot2_arrive:
+				var ball_pos = get_pos()
+				ball_pos.x += movement.x
+				ball_pos.y += movement.y
+
+				if OS.get_ticks_msec() >= shot2_end:
+					set_pos(shot2_destination)
+					shot2_arrive = true
+				else:
+					move(movement)
+		else:
+			move(movement)
 
 		if shot2_active:
 			new_anim = "shot2"
@@ -124,7 +129,6 @@ func shot2(destination, speed):
 	var target = target_resource.instance()
 	get_node("/root/control").get_root().add_child(target)
 	target.set_pos(shot2_destination)
-	#target.set_pos(Vector2(shot2_destination.x + 4, shot2_destination.y - 2))
 
 	direction = (shot2_destination - get_pos()).normalized()
 

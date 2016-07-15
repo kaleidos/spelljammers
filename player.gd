@@ -130,19 +130,18 @@ func shot(player_axis, is_secondary):
 		var player_area_height = 334
 		var min_area2 = 340
 		var max_area2 = 540
-		var min_area1 = 70
-		var max_area1 = 256
+		var min_area1 = 80
+		var max_area1 = 300
 		var x
 		var y
 
 		if diff != 0:
 			if player_area == "left":
-				x = min_area2 + ((100 * player_area_width) / diff)
+				x = min_area2 + ((100 * player_area_width) / (diff*2))
 				if x > max_area2:
 					x = max_area2
-
 			else:
-				x = diff * 100 / player_area_width
+				x = (diff*2) * 100 / player_area_width
 				if x < min_area1:
 					x = min_area1
 				elif x > max_area1:
@@ -161,7 +160,7 @@ func shot(player_axis, is_secondary):
 
 
 		if y > player_area_height:
-			y = 320
+			y = 330
 		elif y < 70:
 			y = 90
 

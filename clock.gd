@@ -29,7 +29,6 @@ func _fixed_process(delta):
 
 			var time_remaing = limit - seconds
 
-			print(time_remaing)
 			if time_remaing == 10:
 				set("custom_colors/font_color", "#d71b1b")
 
