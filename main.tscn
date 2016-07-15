@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=1]
+[gd_scene load_steps=12 format=1]
 
 [ext_resource path="res://main.gd" type="Script" id=1]
 [ext_resource path="res://ase/scenario_base_castle.png" type="Texture" id=2]
 [ext_resource path="res://clock.tscn" type="PackedScene" id=3]
 [ext_resource path="res://ball.tscn" type="PackedScene" id=4]
+[ext_resource path="res://torch.tscn" type="PackedScene" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -172,6 +173,29 @@ transform/pos = Vector2( 464, 214 )
 z/z = 2
 collision/layers = 6
 collision/mask = 6
+
+[node name="SpotLight" type="SpotLight" parent="ball"]
+
+_import_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+layers = 1
+params/enabled = true
+params/editor_only = false
+params/bake_mode = 0
+params/energy = 1.0
+colors/diffuse = Color( 0.0372009, 0.0607548, 0.414062, 1 )
+colors/specular = Color( 0.964844, 0.0603027, 0.0603027, 1 )
+shadow/shadow = false
+shadow/darkening = 0.0
+shadow/z_offset = 0.05
+shadow/z_slope_scale = 0.0
+shadow/esm_multiplier = 60.0
+shadow/blur_passes = 1.0
+projector = null
+operator = 0
+params/radius = 2.0
+params/attenuation = 1.0
+params/spot_angle = 68.9062
+params/spot_attenuation = 1.0
 
 [node name="net" type="Node2D" parent="."]
 
@@ -346,6 +370,26 @@ transform/pos = Vector2( 41.226, -23.669 )
 shape = SubResource( 6 )
 trigger = false
 _update_shape_index = 0
+
+[node name="Sprite" parent="." instance=ExtResource( 5 )]
+
+transform/pos = Vector2( 119.959, 58.3906 )
+transform/scale = Vector2( 1, 1 )
+
+[node name="Sprite1" parent="." instance=ExtResource( 5 )]
+
+transform/pos = Vector2( 181.527, 59.185 )
+transform/scale = Vector2( 1, 1 )
+
+[node name="Sprite2" parent="." instance=ExtResource( 5 )]
+
+transform/pos = Vector2( 460.769, 58.7878 )
+transform/scale = Vector2( 1, 1 )
+
+[node name="Sprite3" parent="." instance=ExtResource( 5 )]
+
+transform/pos = Vector2( 524.721, 59.5822 )
+transform/scale = Vector2( 1, 1 )
 
 [connection signal="body_enter" from="3points" to="." method="_on_3points"]
 
