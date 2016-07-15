@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=1]
+[gd_scene load_steps=13 format=1]
 
 [ext_resource path="res://main.gd" type="Script" id=1]
 [ext_resource path="res://ase/scenario_base_castle.png" type="Texture" id=2]
 [ext_resource path="res://clock.tscn" type="PackedScene" id=3]
-[ext_resource path="res://ball.tscn" type="PackedScene" id=4]
-[ext_resource path="res://torch.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/CINNA-small.fnt" type="Font" id=4]
+[ext_resource path="res://ball.tscn" type="PackedScene" id=5]
+[ext_resource path="res://torch.tscn" type="PackedScene" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -113,11 +114,12 @@ bounce = 0.0
 
 [node name="clock" parent="." instance=ExtResource( 3 )]
 
-rect/scale = Vector2( 0.8, 0.8 )
-margin/left = 306.0
-margin/top = 51.0
-margin/right = 346.0
-margin/bottom = 64.0
+rect/scale = Vector2( 0.7, 0.7 )
+margin/left = 309.0
+margin/top = 50.0
+margin/right = 349.0
+margin/bottom = 69.0
+custom_fonts/font = ExtResource( 4 )
 text = "60"
 align = 1
 
@@ -127,10 +129,12 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 276.0
-margin/top = 49.0
-margin/right = 316.0
-margin/bottom = 62.0
+margin/left = 275.0
+margin/top = 44.0
+margin/right = 315.0
+margin/bottom = 63.0
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 1, 0.976471, 0.741176, 1 )
 text = "00"
 align = 1
 percent_visible = 1.0
@@ -143,10 +147,12 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 328.0
-margin/top = 49.0
-margin/right = 368.0
-margin/bottom = 62.0
+margin/left = 330.0
+margin/top = 44.0
+margin/right = 370.0
+margin/bottom = 63.0
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 1, 0.976471, 0.741176, 1 )
 text = "00"
 align = 1
 percent_visible = 1.0
@@ -167,7 +173,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="ball" parent="." instance=ExtResource( 4 )]
+[node name="ball" parent="." instance=ExtResource( 5 )]
 
 transform/pos = Vector2( 464, 214 )
 z/z = 2
@@ -183,7 +189,7 @@ __meta__ = { "_editor_collapsed":true }
 
 input/pickable = false
 shapes/0/shape = SubResource( 2 )
-shapes/0/transform = Matrix32( 1, 0, 0, 1, -8.26925, -1.68988 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, -18.2693, -1.68988 )
 shapes/0/trigger = false
 collision/layers = 1
 collision/mask = 1
@@ -194,7 +200,7 @@ bounce = 0.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="net/StaticBody2D"]
 
-transform/pos = Vector2( -8.26925, -1.68988 )
+transform/pos = Vector2( -18.2693, -1.68988 )
 shape = SubResource( 2 )
 trigger = false
 _update_shape_index = 0
@@ -348,25 +354,21 @@ shape = SubResource( 6 )
 trigger = false
 _update_shape_index = 0
 
-[node name="Sprite" parent="." instance=ExtResource( 5 )]
+[node name="Sprite" parent="." instance=ExtResource( 6 )]
 
 transform/pos = Vector2( 119.959, 58.3906 )
-z/z = 0
 
-[node name="Sprite1" parent="." instance=ExtResource( 5 )]
+[node name="Sprite1" parent="." instance=ExtResource( 6 )]
 
 transform/pos = Vector2( 181.527, 59.185 )
-z/z = 0
 
-[node name="Sprite2" parent="." instance=ExtResource( 5 )]
+[node name="Sprite2" parent="." instance=ExtResource( 6 )]
 
 transform/pos = Vector2( 460.769, 58.7878 )
-z/z = 0
 
-[node name="Sprite3" parent="." instance=ExtResource( 5 )]
+[node name="Sprite3" parent="." instance=ExtResource( 6 )]
 
 transform/pos = Vector2( 524.721, 59.5822 )
-z/z = 0
 
 [connection signal="body_enter" from="3points" to="." method="_on_3points"]
 
