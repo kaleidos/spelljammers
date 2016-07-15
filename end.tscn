@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=6 format=1]
 
 [ext_resource path="res://assets/end.png" type="Texture" id=1]
-[ext_resource path="res://replay.gd" type="Script" id=2]
-[ext_resource path="res://assets/game_over.png" type="Texture" id=3]
+[ext_resource path="res://assets/ka16.fnt" type="Font" id=2]
+[ext_resource path="res://replay.gd" type="Script" id=3]
+[ext_resource path="res://ase/marcador.png" type="Texture" id=4]
 
 [sub_resource type="Animation" id=1]
 
@@ -20,18 +21,18 @@ tracks/0/keys = { "cont":true, "times":FloatArray( 0, 0.5, 1 ), "transitions":Fl
 texture = ExtResource( 1 )
 centered = false
 
-[node name="Label" type="Label" parent="."]
+[node name="press play" type="Label" parent="."]
 
 visibility/opacity = 0.44591
-rect/scale = Vector2( 2, 2 )
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 123.0
-margin/top = 253.0
-margin/right = 330.0
-margin/bottom = 285.0
+margin/left = 197.0
+margin/top = 280.0
+margin/right = 456.0
+margin/bottom = 312.0
+custom_fonts/font = ExtResource( 2 )
 text = "PRESS A TO PLAY AGAIN"
 align = 1
 valign = 1
@@ -40,7 +41,7 @@ lines_skipped = 0
 max_lines_visible = -1
 __meta__ = { "_editor_collapsed":true }
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Label"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="press play"]
 
 playback/process_mode = 1
 playback/default_blend_time = 0.0
@@ -58,24 +59,25 @@ input/pickable = false
 collision/layers = 1
 collision/mask = 1
 collision/margin = 0.08
-script/script = ExtResource( 2 )
+script/script = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]
 
-transform/pos = Vector2( 321.97, 108.793 )
-texture = ExtResource( 3 )
+transform/pos = Vector2( 326.211, 174.25 )
+texture = ExtResource( 4 )
 
 [node name="winner" type="Label" parent="."]
 
-rect/scale = Vector2( 3, 3 )
+rect/scale = Vector2( 1.5, 1.5 )
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 135.0
-margin/top = 194.0
-margin/right = 262.0
-margin/bottom = 214.0
+margin/left = 169.0
+margin/top = 142.0
+margin/right = 387.0
+margin/bottom = 160.0
+custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0.992188, 1, 0, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_offset_x = -1
@@ -89,28 +91,68 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="Label 2" type="Label" parent="."]
+[node name="points" type="Label" parent="."]
 
-visibility/visible = false
-rect/scale = Vector2( 5, 5 )
 focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = 112.0
-margin/top = 81.0
-margin/right = 195.0
-margin/bottom = 101.0
-custom_colors/font_color = Color( 0.304688, 0.625183, 1, 1 )
+margin/left = 237.0
+margin/top = 177.0
+margin/right = 413.0
+margin/bottom = 206.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.988281, 0.953537, 0.953537, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
-custom_constants/shadow_offset_x = 0
-custom_constants/shadow_offset_y = 0
+text = "0 points"
+align = 1
+valign = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="game over" type="Label" parent="."]
+
+rect/scale = Vector2( 4, 4 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 0
+size_flags/vertical = 0
+margin/left = 90.0
+margin/top = 27.0
+margin/right = 209.0
+margin/bottom = 48.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.304688, 0.625183, 1, 1 )
+custom_colors/font_color_shadow = Color( 0.96875, 0.957397, 0.957397, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/shadow_offset_y = 1
 custom_constants/shadow_as_outline = 0
 text = "GAME OVER"
 align = 1
 valign = 1
 autowrap = true
 uppercase = true
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = 2
+
+[node name="looser" type="Label" parent="."]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 164.0
+margin/top = 243.0
+margin/right = 491.0
+margin/bottom = 272.0
+custom_fonts/font = ExtResource( 2 )
+custom_colors/font_color = Color( 0.78125, 0.805176, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "PLAYER 1 LOOSE - 0 points"
+align = 1
+valign = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
