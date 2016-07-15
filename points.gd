@@ -15,4 +15,5 @@ func _fixed_process(delta):
 
 func set_points(player1, player2):
 	start = OS.get_ticks_msec()
-	get_node("label").set_text(player1 + " - " + player2)
+	get_node("player1").set_text(player1)
+	get_node("player2").set_text(player2)
