@@ -42,7 +42,7 @@ func _ready():
 	control.reset_players_positions()
 	control.player1_start()
 
-	control.enable_ia()
+	#control.enable_ia()
 
 func _on_3points( body ):
 	if !body.has_method("is_ball"):

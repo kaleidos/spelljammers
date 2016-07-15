@@ -2,7 +2,7 @@
 extends Label
 var start
 var seconds
-var limit = 60
+var limit = 90
 
 func _ready():
 	start = OS.get_ticks_msec()
