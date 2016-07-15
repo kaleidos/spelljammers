@@ -139,14 +139,23 @@ func shot2(destination, speed):
 	animation.set_current_animation("shot2")
 	animation.set_speed(1)
 	shot2Animation.add_track(0)
+	shot2Animation.add_track(0)
 	shot2Animation.set_length(animation_time)
 	shot2Animation.set_step(0.1)
 	shot2Animation.set_loop(false)
+
 	shot2Animation.track_set_path(0, "/root/stadium/ball/sprite:transform/scale")
+	shot2Animation.track_set_path(1, "/root/stadium/ball/sprite:frame")
 	shot2Animation.value_track_set_continuous(0, true)
+	shot2Animation.value_track_set_continuous(1, true)
+
 	shot2Animation.track_insert_key(0, 0.0, Vector2(1, 1))
 	shot2Animation.track_insert_key(0, animation_time / 2, Vector2(5, 5))
 	shot2Animation.track_insert_key(0, animation_time, Vector2(0.7, 0.7))
+
+	shot2Animation.track_insert_key(1, 0.0, 0)
+	shot2Animation.track_insert_key(1, animation_time / 2, 3)
+	shot2Animation.track_insert_key(1, animation_time, 5)
 
 	set_layer_mask_bit(1, false)
 	set_collision_mask_bit(1, false)
