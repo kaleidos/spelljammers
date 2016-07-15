@@ -16,17 +16,17 @@ func _fixed_process(delta):
 	var player2_points = players_poinsts.player2
 	var looser_player = ""
 
-	var winner_player = "No winners"
+	var winner_player = "NO WINNERS"
 	var winner_points = str(player1_points) + " points"
 
 	if player1_points > player2_points:
-		winner_player = "Winner Player 1"
+		winner_player = "WINNER PLAYER 1"
 		winner_points = str(player1_points) + " points"
-		looser_player = "Player 2 loose! - " + str(player2_points) + " points"
+		looser_player = "PLAYER 2 LOOSE! - " + str(player2_points) + " points"
 	elif player1_points < player2_points:
-		winner_player = "Winner Player 2"
+		winner_player = "WINNER PLAYER 2"
 		winner_points = str(player2_points) + " points"
-		looser_player = "Player 1 loose! - " + str(player1_points) + " points"
+		looser_player = "PLAYER 1 LOOSE! - " + str(player1_points) + " points"
 
 	root.get_node("points").set_text(winner_points)
 	root.get_node("winner").set_text(winner_player)
